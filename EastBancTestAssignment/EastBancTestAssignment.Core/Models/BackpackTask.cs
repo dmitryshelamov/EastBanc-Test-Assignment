@@ -13,6 +13,7 @@ namespace EastBancTestAssignment.Core.Models
 
         public BackpackTask()
         {
+            BackpackTaskSolution = new BackpackTaskSolution();
             Id = Guid.NewGuid().ToString();
             Items = new List<Item>();
         }

@@ -38,5 +38,24 @@ namespace EastBancTestAssignment.UnitTest.BLL
             Assert.AreEqual(weightLimit, backpackTask.WeightLimit);
             Assert.AreEqual(_itemDtos.Count, backpackTask.Items.Count);
         }
+
+
+        [Test]
+        public void StartBackpackTask_PassValidBackpackTask_ShouldCalculateCorrect()
+        {
+            //  arrange
+            var taskName = "TaskName";
+            var weightLimit = 8;
+            BackpackTaskService service = new BackpackTaskService();
+            var backpackTask = service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
+            //  act
+            service.StartBackpackTask(backpackTask);
+            //  assert
+            //  assert
+            Assert.AreEqual(31, backpackTask.BackpackTaskSolution.CombinationCalculated);
+            Assert.AreEqual(46500, backpackTask.BackpackTaskSolution.BestItemSetPrice);
+            Assert.AreEqual(8, backpackTask.BackpackTaskSolution.BestItemSetWeight);
+            Assert.AreEqual(3, backpackTask.BackpackTaskSolution.BestItemsSet.Count);
+        }
     }
 }

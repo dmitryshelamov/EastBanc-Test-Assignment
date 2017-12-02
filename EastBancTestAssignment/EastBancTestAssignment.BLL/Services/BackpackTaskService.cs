@@ -19,6 +19,7 @@ namespace EastBancTestAssignment.BLL.Services
                     Weight = itemDto.Weight
                 }).ToList();
 
+            //  create task
             BackpackTask backpackTask = new BackpackTask
             {
                 Name = taskName,
@@ -26,7 +27,80 @@ namespace EastBancTestAssignment.BLL.Services
                 WeightLimit = backpackWeightLimit
             };
 
+            //  and return it to client
             return backpackTask;
+        }
+
+        public void StartBackpackTask(BackpackTask backpackTask)
+        {
+            //  set start time
+            backpackTask.BackpackTaskSolution.StartTime = DateTime.Now;
+            backpackTask.BackpackTaskSolution.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;
+            //  first we need to generate all possible unique sets of items
+            if (backpackTask.BackpackTaskSolution.ItemCombinations == null)
+            {
+                //  generate item combinations
+                backpackTask.BackpackTaskSolution.ItemCombinations = new List<ItemCombination>();
+                GenerateCombination(backpackTask.Items, backpackTask.BackpackTaskSolution.ItemCombinations);
+            }
+
+            CalculateBestItemSet(backpackTask);
+
+            //  task done, update end time
+            backpackTask.BackpackTaskSolution.EndTime = DateTime.Now;
+        }
+
+
+        private void GenerateCombination(List<Item> set, List<ItemCombination> result)
+        {
+            result.Add(new ItemCombination { Items = set });
+            GenerateCombinationRecursive(set, result);
+        }
+
+        private void GenerateCombinationRecursive(List<Item> set, List<ItemCombination> result)
+        {
+            for (int i = 0; i < set.Count; i++)
+            {
+                List<Item> temp = new List<Item>(set.Where((s, index) => index != i));
+
+                if (temp.Count > 0 && !result.Where(l => l.Items.Count == temp.Count).Any(l => l.Items.SequenceEqual(temp)))
+                {
+                    result.Add(new ItemCombination { Items = temp });
+                    GenerateCombinationRecursive(temp, result);
+                }
+            }
+        }
+
+        private void CalculateBestItemSet(BackpackTask backpackTask)
+        {
+            //  iterate over all item combinations
+            foreach (var itemCombination in backpackTask.BackpackTaskSolution.ItemCombinations)
+            {
+                //  iterate over all item int current item set
+                //  calculate total weight and price of current item set
+                var totalWeight = 0;
+                var totalPrice = 0;
+                foreach (var item in itemCombination.Items)
+                {
+                    totalWeight += item.Weight;
+                    totalPrice += item.Price;
+                }
+
+                //  check if we ok with totalWeight and current price of item set is greater that current best item set price
+                if (totalWeight <= backpackTask.WeightLimit &&
+                    totalPrice > backpackTask.BackpackTaskSolution.BestItemSetPrice)
+                {
+                    //  update current solution
+                    backpackTask.BackpackTaskSolution.BestItemSetPrice = totalPrice;
+                    backpackTask.BackpackTaskSolution.BestItemSetWeight = totalWeight;
+                    backpackTask.BackpackTaskSolution.BestItemsSet = itemCombination.Items;
+                }
+
+                //  mark current set as calucated
+                itemCombination.IsCalculated = true;
+                //  update calculation counter
+                backpackTask.BackpackTaskSolution.CombinationCalculated++;
+            }
         }
     }
 }
