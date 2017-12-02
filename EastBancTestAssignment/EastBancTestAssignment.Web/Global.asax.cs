@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
+using EastBancTestAssignment.Web.App_Start;
 using EastBancTestAssignment.Web.UI.MVC;
 
 namespace EastBancTestAssignment.Web
@@ -13,6 +15,7 @@ namespace EastBancTestAssignment.Web
 
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }
