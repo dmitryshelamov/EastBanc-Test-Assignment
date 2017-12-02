@@ -7,5 +7,10 @@ namespace EastBancTestAssignment.Core.Models
         public string Id { get; set; }
         public List<Item> Items { get; set; }
         public bool IsCalculated { get; set; }
+
+        public ItemCombination()
+        {
+            Items = new List<Item>();
+        }
     }
 }

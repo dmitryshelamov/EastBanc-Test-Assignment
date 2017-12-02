@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BackpackTaskServiceTest.cs" />
     <Compile Include="DAL\Repositories\ItemRepositoryTest.cs" />
     <Compile Include="Extensions\DbSetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +72,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EastBancTestAssignment.BLL\EastBancTestAssignment.BLL.csproj">
+      <Project>{1F8800F6-88E0-4C0B-9FCD-17ECF9350CF3}</Project>
+      <Name>EastBancTestAssignment.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EastBancTestAssignment.Core\EastBancTestAssignment.Core.csproj">
       <Project>{DE9602DB-105A-4FF6-8BD0-D6EFBA501643}</Project>
       <Name>EastBancTestAssignment.Core</Name>
@@ -80,6 +85,7 @@
       <Name>EastBancTestAssignment.DAL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

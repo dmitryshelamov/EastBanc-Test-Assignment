@@ -16,5 +16,11 @@ namespace EastBancTestAssignment.Core.Models
         public double CombinationCalculated{ get; set; }
 
         public List<ItemCombination> ItemCombinations { get; set; }
+
+        public BackpackTaskSolution()
+        {
+            BestItemsSet = new List<Item>();
+            ItemCombinations = new List<ItemCombination>();
+        }
     }
 }
