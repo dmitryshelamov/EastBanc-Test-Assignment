@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\Repositories\IItemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
