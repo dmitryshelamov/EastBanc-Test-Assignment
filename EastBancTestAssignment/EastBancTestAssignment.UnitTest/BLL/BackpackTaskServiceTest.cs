@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using EastBancTestAssignment.BLL.DTOs;
 using EastBancTestAssignment.BLL.Services;
-using EastBancTestAssignment.Core.Models;
 using NUnit.Framework;
 
 namespace EastBancTestAssignment.UnitTest.BLL

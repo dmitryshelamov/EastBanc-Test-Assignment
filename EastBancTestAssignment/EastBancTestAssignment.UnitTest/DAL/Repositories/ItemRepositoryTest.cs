@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using EastBancTestAssignment.Core.Models;
 using EastBancTestAssignment.DAL.Interfaces;
 using EastBancTestAssignment.DAL.Repositories;
 using EastBancTestAssignment.UnitTest.Extensions;
 using NSubstitute;
-using NSubstitute.Core;
 using NUnit.Framework;
 
 namespace EastBancTestAssignment.UnitTest.DAL.Repositories
