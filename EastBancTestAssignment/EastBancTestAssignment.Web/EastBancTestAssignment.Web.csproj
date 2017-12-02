@@ -121,6 +121,7 @@
     <Content Include="UI\Scripts\bootstrap.min.js" />
     <Content Include="UI\MVC\Views\Shared\_Layout.cshtml" />
     <Content Include="UI\MVC\Views\_ViewStart.cshtml" />
+    <Content Include="UI\MVC\Views\Backpack\NewTask.cshtml" />
     <None Include="UI\Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="UI\Scripts\jquery-3.2.1.js" />
     <Content Include="UI\Scripts\jquery-3.2.1.min.js" />
@@ -138,6 +139,8 @@
     <Compile Include="UI\MVC\Controllers\BackpackController.cs" />
     <Compile Include="UI\MVC\CustomViewEngine.cs" />
     <Compile Include="UI\MVC\ViewModels\BackpackTaskViewModel.cs" />
+    <Compile Include="UI\MVC\ViewModels\ItemViewModel.cs" />
+    <Compile Include="UI\MVC\ViewModels\NewBackpackTaskViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\MVC\Views\web.config" />

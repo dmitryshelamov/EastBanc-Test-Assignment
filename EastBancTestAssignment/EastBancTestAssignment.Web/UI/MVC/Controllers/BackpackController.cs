@@ -12,5 +12,10 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             List<BackpackTaskViewModel> list = new List<BackpackTaskViewModel>();
             return View(list);
         }
+
+        public ActionResult NewTask()
+        {
+            return View();
+        }
     }
 }
