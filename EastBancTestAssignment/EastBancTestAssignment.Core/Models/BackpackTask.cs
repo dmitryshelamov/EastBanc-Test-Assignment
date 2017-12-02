@@ -6,7 +6,7 @@ namespace EastBancTestAssignment.Core.Models
     public class BackpackTask
     {
         public string Id { get; set; }
-        public Backpack Backpack { get; set; }
+        public int WeightLimit { get; set; }
         public List<Item> Items { get; set; }
         public BackpackTaskSolution BackpackTaskSolution { get; set; }
 
