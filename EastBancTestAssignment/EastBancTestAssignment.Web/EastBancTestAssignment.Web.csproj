@@ -137,6 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\MVC\Controllers\BackpackController.cs" />
     <Compile Include="UI\MVC\CustomViewEngine.cs" />
+    <Compile Include="UI\MVC\ViewModels\BackpackTaskViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\MVC\Views\web.config" />
@@ -154,7 +155,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="UI\fonts\" />
-    <Folder Include="UI\MVC\ViewModels\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

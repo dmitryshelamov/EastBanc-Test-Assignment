@@ -1,2 +1,39 @@
-﻿<h1>Test</h1>
-<button class="btn btn-success">Test</button>
+﻿@model List<EastBancTestAssignment.Web.UI.MVC.ViewModels.BackpackTaskViewModel>
+
+<div class="vertical-space">
+        <h1 class="col-md-2">Task List</h1>
+        <button class="btn btn-default pull-right" type="button">New Task</button>
+</div>
+
+
+<div class="">
+    <table id="customers" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Task Id</th>
+            <th>Backpack Weight Limit</th>
+            <th>Best Item Price</th>
+            <th>Percent Of Complete</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <th>@task.Id</th>
+                <th>@task.BackpackWeightLimit</th>
+                <th>@task.BestPrice</th>
+                <th>@task.PercentComplete</th>
+                <th>@task.Status</th>
+                <th>
+                    <div class="text-center">
+                        <a href="@Url.Action("Delete", "Backpack", new {id = task.Id})" class="btn btn-danger">Delete</a>
+                    </div>
+                </th>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

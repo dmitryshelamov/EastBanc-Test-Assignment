@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using EastBancTestAssignment.Web.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 {
@@ -7,7 +9,8 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         // GET: Backpack
         public ActionResult Index()
         {
-            return View();
+            List<BackpackTaskViewModel> list = new List<BackpackTaskViewModel>();
+            return View(list);
         }
     }
 }
