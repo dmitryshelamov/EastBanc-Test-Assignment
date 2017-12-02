@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EastBancTestAssignment.Core.Models
 {
@@ -6,6 +7,13 @@ namespace EastBancTestAssignment.Core.Models
     {
         public string Id { get; set; }
         public Backpack Backpack { get; set; }
-        public List<Item> Items { get; set; }   
+        public List<Item> Items { get; set; }
+        public BackpackTaskSolution BackpackTaskSolution { get; set; }
+
+        public BackpackTask()
+        {
+            Id = Guid.NewGuid().ToString();
+            Items = new List<Item>();
+        }
     }
 }
