@@ -55,6 +55,14 @@
     <Compile Include="Migrations\201712031155389_Init.Designer.cs">
       <DependentUpon>201712031155389_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712031206056_AddBackpackTask.cs" />
+    <Compile Include="Migrations\201712031206056_AddBackpackTask.Designer.cs">
+      <DependentUpon>201712031206056_AddBackpackTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031208284_AddItemCombinations.cs" />
+    <Compile Include="Migrations\201712031208284_AddItemCombinations.Designer.cs">
+      <DependentUpon>201712031208284_AddItemCombinations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ItemRepository.cs" />
@@ -67,6 +75,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712031155389_Init.resx">
       <DependentUpon>201712031155389_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031206056_AddBackpackTask.resx">
+      <DependentUpon>201712031206056_AddBackpackTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031208284_AddItemCombinations.resx">
+      <DependentUpon>201712031208284_AddItemCombinations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
