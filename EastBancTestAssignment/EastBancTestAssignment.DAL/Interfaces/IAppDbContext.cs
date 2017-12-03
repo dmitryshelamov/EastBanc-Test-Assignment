@@ -6,6 +6,6 @@ namespace EastBancTestAssignment.DAL.Interfaces
     public interface IAppDbContext
     {
         IDbSet<Item> Items { get; }
-        IDbSet<BackpackTask> BackpackTasks { get; }
+//        IDbSet<BackpackTask> BackpackTasks { get; }
     }
 }

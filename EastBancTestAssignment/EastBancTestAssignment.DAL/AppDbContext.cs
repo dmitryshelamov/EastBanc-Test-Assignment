@@ -7,7 +7,7 @@ namespace EastBancTestAssignment.DAL
     public class AppDbContext : DbContext, IAppDbContext
     {
         public IDbSet<Item> Items { get; set; }
-        public IDbSet<BackpackTask> BackpackTasks { get; set; }
+//        public IDbSet<BackpackTask> BackpackTasks { get; set; }
 
         public AppDbContext() : base("DefaultConnection") { }
 

@@ -51,6 +51,11 @@
     <Compile Include="Interfaces\IAppDbContext.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\Repositories\IItemRepository.cs" />
+    <Compile Include="Migrations\201712031155389_Init.cs" />
+    <Compile Include="Migrations\201712031155389_Init.Designer.cs">
+      <DependentUpon>201712031155389_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ItemRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
@@ -59,7 +64,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712031155389_Init.resx">
+      <DependentUpon>201712031155389_Init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EastBancTestAssignment.Core\EastBancTestAssignment.Core.csproj">
       <Project>{de9602db-105a-4ff6-8bd0-d6efba501643}</Project>
