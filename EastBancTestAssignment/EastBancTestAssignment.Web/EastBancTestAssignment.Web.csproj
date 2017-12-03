@@ -123,6 +123,7 @@
     <Content Include="UI\MVC\Views\_ViewStart.cshtml" />
     <Content Include="UI\MVC\Views\Backpack\NewTask.cshtml" />
     <None Include="UI\Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="UI\Scripts\Custom\AddNewRow.js" />
     <Content Include="UI\Scripts\jquery-3.2.1.js" />
     <Content Include="UI\Scripts\jquery-3.2.1.min.js" />
     <Content Include="UI\Scripts\jquery-3.2.1.slim.js" />

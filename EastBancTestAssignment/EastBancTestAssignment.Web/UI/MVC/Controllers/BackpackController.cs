@@ -15,7 +15,16 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 
         public ActionResult NewTask()
         {
-            return View();
+            var vm = new NewBackpackTaskViewModel
+            {
+                Items = new List<ItemViewModel>
+                {
+                    new ItemViewModel { Name = "CustomName#1", Price = 1, Weight = 10 },
+                    new ItemViewModel { Name = "CustomName#2", Price = 2, Weight = 20 },
+                    new ItemViewModel { Name = "CustomName#3", Price = 3, Weight = 30 },
+                }
+            };
+            return View(vm);
         }
     }
 }

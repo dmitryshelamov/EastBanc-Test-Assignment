@@ -12,6 +12,9 @@ namespace EastBancTestAssignment.Web.App_Start
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/UI/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/newtask").Include(
+                "~/UI/Scripts/Custom/AddNewRow.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/UI/Content/css/bootstrap.css",
                 "~/UI/Content/css/site.css"));
