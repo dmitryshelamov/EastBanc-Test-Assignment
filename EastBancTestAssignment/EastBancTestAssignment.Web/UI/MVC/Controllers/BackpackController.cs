@@ -26,5 +26,12 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             };
             return View(vm);
         }
+
+        [HttpPost]
+        public ActionResult NewTask(NewBackpackTaskViewModel vm)
+        {
+            var v = vm;
+            return RedirectToAction("NewTask");
+        }
     }
 }

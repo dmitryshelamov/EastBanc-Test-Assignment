@@ -19,6 +19,8 @@ $(document).ready(function () {
                 .removeClass("template")
                 .addClass()
                 .find(".name-input").attr("name", "Items[" + newIndex + "].Name").end()
+                .find(".price-input").attr("name", "Items[" + newIndex + "].Price").end()
+                .find(".weight-input").attr("name", "Items[" + newIndex + "].Weight").end()
                 .find(".item-delete > .text-center button").attr("id", "row-number-" + newIndex).end()
                 .appendTo($tableItem.find("tbody"));
         });

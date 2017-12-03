@@ -3,10 +3,12 @@
 
 <h1>New Task</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        @using (Html.BeginForm("NewTask", "Backpack", FormMethod.Post))
-        {
+@using (Html.BeginForm("NewTask", "Backpack", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+
+
             <div class="form-group">
                 @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
@@ -16,82 +18,94 @@
                 @Html.LabelFor(m => m.BackpackWeightLimit)
                 @Html.TextBoxFor(m => m.BackpackWeightLimit, new {@class = "form-control"})
             </div>
-        }
+
+        </div>
     </div>
-</div>
 
-<hr />
+    <hr/>
 
-<div>
-    <table id="table-item" class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Weight</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        <tr class="template">
-            <th class="item-name">
-                <input type="text" value="" class="form-control name-input"/>
-            </th>
-            <th class="item-price">
-                <input type="text" value="" class="form-control price-input"/>
-            </th>
-            <th class="item-weight">
-                <input type="text" value="" class="form-control weight-input"/>
-            </th>
-            <th class="item-delete">
-                <div class="text-center">
-                    <button class="btn btn-danger">Delete</button>
-                </div>
-            </th>
-        </tr>
-
-        @for (var i = 0; i < Model.Items.Count; i++)
-        {
-            var item = Model.Items[i];
+    <div>
+        <table id="table-item" class="table table-bordered table-hover">
+            <thead>
             <tr>
-                
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
 
-@*                <th>@Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})</th>*@
-@*                <th>@Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})</th>*@
-@*                <th>@Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})</th>*@
-
-
-                <th>@Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})</th>
-                <th>@Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})</th>
-                <th>@Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})</th>
-
-                <th>
+            <tr class="template">
+                <th class="item-name">
+                    <input type="text" value="" class="form-control name-input"/>
+                </th>
+                <th class="item-price">
+                    <input type="text" value="" class="form-control price-input"/>
+                </th>
+                <th class="item-weight">
+                    <input type="text" value="" class="form-control weight-input"/>
+                </th>
+                <th class="item-delete">
                     <div class="text-center">
-                        <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
+                        <button class="btn btn-danger">Delete</button>
                     </div>
                 </th>
-                <input type="hidden" name="Items[@(i)].Name" value="@item.Name"/>
-                <input type="hidden" name="Items[@(i)].Price" value="@item.Price"/>
-                <input type="hidden" name="Items[@(i)].Weight" value="@item.Weight"/>
             </tr>
-        }
 
-        </tbody>
-    </table>
-    
-    <button class="btn btn-default" id="button-add-row">Add</button>
-
-</div>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                <tr>
 
 
+                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})</th>*@
+                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})</th>*@
+                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})</th>*@
 
-<div class="container">
-    <div class="col-md-offset-5">
-        <button class="btn btn-success">Create</button>
-        <button class="btn btn-default">Cancel</button>
+
+                    <th>
+                        @Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})
+                        <input type="hidden" name="Items[@(i)].Name" value="@item.Name"/>
+                    </th>
+                    <th>
+                        <input type="hidden" name="Items[@(i)].Price" value="@item.Price"/>
+                        @Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})
+                    </th>
+                    <th>
+                        <input type="hidden" name="Items[@(i)].Weight" value="@item.Weight"/>
+                        @Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})
+                    </th>
+
+                    <th>
+                        <div class="text-center">
+                            <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
+                        </div>
+                    </th>
+
+
+
+                </tr>
+            }
+
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-default" id="button-add-row">Add</button>
+
     </div>
-</div>
+
+    <div class="container">
+        <div class="col-md-offset-5">
+            <button type="submit" class="btn btn-success">Create</button>
+            <button class="btn btn-default">Cancel</button>
+        </div>
+    </div>
+}
+
+
+
+
 
 @section scripts
 {
