@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EastBancTestAssignment.Core.Models;
 
 namespace EastBancTestAssignment.DAL.Interfaces.Repositories
@@ -7,5 +8,6 @@ namespace EastBancTestAssignment.DAL.Interfaces.Repositories
     {
         void Add(BackpackTask backpackTask);
         Task<BackpackTask> Get(string id);
+        Task<List<BackpackTask>> GetAll();
     }
 }

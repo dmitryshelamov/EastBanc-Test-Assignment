@@ -17,9 +17,24 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         }
 
         // GET: Backpack
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            var taskDtos = await _service.GetAllBackpackTasks();
             List<BackpackTaskViewModel> list = new List<BackpackTaskViewModel>();
+            foreach (var backpackTask in taskDtos)
+            {
+                var percent = (int) (backpackTask.CombinationCalculated / backpackTask.ItemCombinationDtos.Count) * 100;
+                bool status = percent == 100;
+                list.Add(new BackpackTaskViewModel
+                {
+                    Id = backpackTask.Id,
+                    BackpackWeightLimit = backpackTask.WeightLimit,
+                    BestPrice = backpackTask.BestItemSetPrice,
+                    PercentComplete = percent,
+                    Status = status
+                });
+            }
+
             return View(list);
         }
 

@@ -3,7 +3,7 @@ using EastBancTestAssignment.Core.Models;
 
 namespace EastBancTestAssignment.BLL.DTOs
 {
-    class ItemCombinationDto
+    public class ItemCombinationDto
     {
         public string Id { get; set; }
         public bool IsCalculated { get; set; }

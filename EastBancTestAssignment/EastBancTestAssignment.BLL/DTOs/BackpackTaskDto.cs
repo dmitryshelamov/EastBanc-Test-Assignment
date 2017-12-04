@@ -21,7 +21,7 @@ namespace EastBancTestAssignment.BLL.DTOs
         public double NumberOfUniqueItemCombination { get; set; }
         public double CombinationCalculated { get; set; }
 
-        public List<ItemCombination> ItemCombinations { get; set; }
+        public List<ItemCombinationDto> ItemCombinationDtos { get; set; }
 
         public BackpackTaskDto()
         {

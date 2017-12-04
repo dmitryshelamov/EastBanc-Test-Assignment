@@ -73,6 +73,55 @@ namespace EastBancTestAssignment.BLL.Services
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task<List<BackpackTaskDto>> GetAllBackpackTasks()
+        {
+            List<BackpackTask> tasks = await _unitOfWork.BackpackTaskRepository.GetAll();
+            List<BackpackTaskDto> backpackTaskDtos = new List<BackpackTaskDto>();
+            foreach (var backpackTask in tasks)
+            {
+                backpackTaskDtos.Add(new BackpackTaskDto
+                {
+                    Id = backpackTask.Id,
+                    Name = backpackTask.Name,
+                    WeightLimit = backpackTask.WeightLimit,
+                    ItemDtos = backpackTask.Items.Select(item => new ItemDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Weight = item.Weight
+                    }).ToList(),
+                    BestItemSetPrice = backpackTask.BestItemSetPrice,
+                    BestItemSetWeight = backpackTask.BestItemSetWeight,
+                    BestItemDtosSet = backpackTask.BestItemsSet.Select(item => new ItemDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Weight = item.Weight
+                    }).ToList(),
+                    StartTime = backpackTask.StartTime,
+                    EndTime = backpackTask.EndTime,
+                    NumberOfUniqueItemCombination = backpackTask.NumberOfUniqueItemCombination,
+                    CombinationCalculated = backpackTask.CombinationCalculated,
+                    ItemCombinationDtos = backpackTask.ItemCombinations.Select(ic => new ItemCombinationDto
+                    {
+                        Id = ic.Id,
+                        IsCalculated = ic.IsCalculated,
+                        ItemDtos = ic.Items.Select(item => new ItemDto
+                        {
+                            Id = item.Id,
+                            Name = item.Name,
+                            Price = item.Price,
+                            Weight = item.Weight
+                        }).ToList()
+                    }).ToList()
+            });
+            }
+
+            return backpackTaskDtos;
+        }
+
 
         private void GenerateCombination(List<Item> set, List<ItemCombination> result)
         {
