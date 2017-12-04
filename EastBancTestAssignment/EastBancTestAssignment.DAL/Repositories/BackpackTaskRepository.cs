@@ -23,12 +23,20 @@ namespace EastBancTestAssignment.DAL.Repositories
 
         public async Task<BackpackTask> Get(string id)
         {
-            return await _context.BackpackTasks.SingleOrDefaultAsync(bt => bt.Id == id);
+            return await _context.BackpackTasks
+                .Include(b => b.Items)
+                .Include(b => b.BestItemsSet)
+                .Include(b => b.ItemCombinations)
+                .SingleOrDefaultAsync(bt => bt.Id == id);
         }
 
         public async Task<List<BackpackTask>> GetAll()
         {
-            return await _context.BackpackTasks.Include(b => b.Items).Include(b => b.BestItemsSet).Include(b => b.ItemCombinations).ToListAsync();
+            return await _context.BackpackTasks
+                .Include(b => b.Items)
+                .Include(b => b.BestItemsSet)
+                .Include(b => b.ItemCombinations)
+                .ToListAsync();
         }
     }
 }

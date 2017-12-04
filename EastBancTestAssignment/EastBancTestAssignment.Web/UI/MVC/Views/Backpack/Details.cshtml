@@ -1,0 +1,104 @@
+﻿@model EastBancTestAssignment.Web.UI.MVC.ViewModels.BackpackTaskSolutionViewModel
+
+<div class="container">
+    <h2>Task: @Model.Name</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    <div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.WeightLimit)
+                            @Html.LabelFor(m => m.WeightLimit, Model.WeightLimit.ToString(), new {@class = "form-control", @readonly = "true"})
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Status)
+                            @Html.LabelFor(m => m.Status, Model.Status.ToString(), new {@class = "form-control", @readonly = "true"})
+                        </div>
+
+                        <hr/>
+
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Weight</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if (Model.Items.Count > 0)
+                            {
+                                foreach (var task in Model.Items)
+                                {
+                                    <tr>
+                                        <th>@task.Name</th>
+                                        <th>@task.Price</th>
+                                        <th>@task.Weight</th>
+                                    </tr>
+                                }
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-offset-6">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Solution</div>
+                <div class="panel-body">
+                    <div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BestPrice)
+                            @Html.LabelFor(m => m.BestPrice, Model.BestPrice.ToString(), new {@class = "form-control", @readonly = "true"})
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CalculationTime)
+                            @Html.LabelFor(m => m.CalculationTime, Model.CalculationTime.ToString(), new {@class = "form-control", @readonly = "true"})
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BestItemSetWeight)
+                            @Html.LabelFor(m => m.BestItemSetWeight, Model.BestItemSetWeight.ToString(), new {@class = "form-control", @readonly = "true"})
+                        </div>
+
+                        <hr />
+
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.BestItemSet.Count > 0)
+                                {
+                                    foreach (var task in Model.BestItemSet)
+                                    {
+                                        <tr>
+                                            <th>@task.Name</th>
+                                            <th>@task.Price</th>
+                                            <th>@task.Weight</th>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

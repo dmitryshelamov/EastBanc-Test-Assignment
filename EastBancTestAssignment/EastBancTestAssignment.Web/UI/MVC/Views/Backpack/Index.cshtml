@@ -24,7 +24,7 @@
         {
             foreach (var task in Model)
             {
-                <tr>
+                <tr onclick="location.href = '@(Url.Action("Details", "Backpack", new { Id = task.Id }))'">
                     <th>@task.Id</th>
                     <th>@task.BackpackWeightLimit</th>
                     <th>@task.BestPrice</th>

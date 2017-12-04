@@ -73,5 +73,42 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             await _service.StartBackpackTask(bt);
             return RedirectToAction("Index");
         }
+
+        public async Task<ActionResult> Details(string id)
+        {
+            var backpackTaskDto = await _service.GetBackpackTask(id);
+            var status = "In Progress";
+            if ((int)backpackTaskDto.CombinationCalculated == (int)backpackTaskDto.NumberOfUniqueItemCombination)
+            {
+                status = "Done";
+            }
+
+            var vm = new BackpackTaskSolutionViewModel
+            {
+                Id = backpackTaskDto.Id,
+                Name = backpackTaskDto.Name,
+                WeightLimit = backpackTaskDto.WeightLimit,
+                Status = status,
+                BestItemSetWeight = backpackTaskDto.BestItemSetWeight,
+                Items = backpackTaskDto.ItemDtos.Select(item => new ItemViewModel
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    Weight = item.Weight
+                }).ToList(),
+                BestPrice = backpackTaskDto.BestItemSetPrice,
+                BestItemSet = backpackTaskDto.BestItemDtosSet.Select(item => new ItemViewModel
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    Weight = item.Weight
+                }).ToList(),
+                CalculationTime = backpackTaskDto.EndTime - backpackTaskDto.StartTime
+            };
+
+            return View(vm);
+        }
     }
 }
