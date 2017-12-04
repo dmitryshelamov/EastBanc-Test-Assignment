@@ -48,6 +48,12 @@
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -159,6 +165,20 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="UI\fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EastBancTestAssignment.BLL\EastBancTestAssignment.BLL.csproj">
+      <Project>{1f8800f6-88e0-4c0b-9fcd-17ecf9350cf3}</Project>
+      <Name>EastBancTestAssignment.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EastBancTestAssignment.Core\EastBancTestAssignment.Core.csproj">
+      <Project>{DE9602DB-105A-4FF6-8BD0-D6EFBA501643}</Project>
+      <Name>EastBancTestAssignment.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EastBancTestAssignment.DAL\EastBancTestAssignment.DAL.csproj">
+      <Project>{8fbefc10-edb6-4a77-b4cb-8c2f1f0453ec}</Project>
+      <Name>EastBancTestAssignment.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

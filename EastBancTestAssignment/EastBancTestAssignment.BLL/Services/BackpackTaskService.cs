@@ -1,15 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EastBancTestAssignment.BLL.DTOs;
 using EastBancTestAssignment.BLL.Interfaces;
 using EastBancTestAssignment.Core.Models;
+using EastBancTestAssignment.DAL;
+using EastBancTestAssignment.DAL.Interfaces;
 
 namespace EastBancTestAssignment.BLL.Services
 {
-    public class BackpackTaskService : IBackpackTaskService
+    public class BackpackTaskService /*: IBackpackTaskService*/
     {
-        public BackpackTask CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
+        private UnitOfWork _unitOfWork;
+
+        public BackpackTaskService()
+        {
+            _unitOfWork = new UnitOfWork(new AppDbContext());
+        }
+
+        public BackpackTaskService(string connectionString)
+        {
+            _unitOfWork = new UnitOfWork(new AppDbContext(connectionString));
+        }
+
+        public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
         {
             //  convert itemDtos to items
             List<Item> items = itemDtos.Select(itemDto => new Item
@@ -27,13 +42,23 @@ namespace EastBancTestAssignment.BLL.Services
                 WeightLimit = backpackWeightLimit
             };
 
+            //  save to database
+            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
+            await _unitOfWork.CompleteAsync();
             //  and return it to client
-            return backpackTask;
+            return new BackpackTaskDto
+            {
+                Id = backpackTask.Id,
+                Name = backpackTask.Name,
+                ItemDtos = itemDtos,
+                WeightLimit = backpackTask.WeightLimit
+            };
         }
 
-        public void StartBackpackTask(BackpackTask backpackTask)
+        public async Task StartBackpackTask(BackpackTaskDto backpackTaskDto)
         {
             //  set start time
+            BackpackTask backpackTask = await _unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
             backpackTask.BackpackTaskSolution.StartTime = DateTime.Now;
             backpackTask.BackpackTaskSolution.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;
             //  first we need to generate all possible unique sets of items
@@ -48,6 +73,10 @@ namespace EastBancTestAssignment.BLL.Services
 
             //  task done, update end time
             backpackTask.BackpackTaskSolution.EndTime = DateTime.Now;
+
+            //  save to database
+//            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
+            await _unitOfWork.CompleteAsync();
         }
 
 
