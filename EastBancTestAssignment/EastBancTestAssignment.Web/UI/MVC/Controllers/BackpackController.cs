@@ -1,11 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using EastBancTestAssignment.BLL.DTOs;
+using EastBancTestAssignment.BLL.Services;
 using EastBancTestAssignment.Web.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 {
     public class BackpackController : Controller
     {
+        private BackpackTaskService _service;
+        public BackpackController()
+        {
+            _service = new BackpackTaskService();
+        }
+
         // GET: Backpack
         public ActionResult Index()
         {
@@ -19,19 +29,32 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             {
                 Items = new List<ItemViewModel>
                 {
-                    new ItemViewModel { Name = "CustomName#1", Price = 1, Weight = 10 },
-                    new ItemViewModel { Name = "CustomName#2", Price = 2, Weight = 20 },
-                    new ItemViewModel { Name = "CustomName#3", Price = 3, Weight = 30 },
+                    new ItemViewModel { Name = "Book", Price = 600, Weight = 1},
+                    new ItemViewModel { Name = "Binoculars", Price = 5000, Weight = 2},
+                    new ItemViewModel { Name = "First Aid Kit", Price = 1500, Weight = 4},
+                    new ItemViewModel { Name = "Laptop", Price = 40000, Weight = 2},
+                    new ItemViewModel { Name = "Bowler", Price = 500, Weight = 1},
+
+                    new ItemViewModel { Name = "Lighter", Price = 400, Weight = 1},
+                    new ItemViewModel { Name = "Tent", Price = 10000, Weight = 2},
+                    new ItemViewModel { Name = "Radio", Price = 2000, Weight = 1},
                 }
             };
             return View(vm);
         }
 
         [HttpPost]
-        public ActionResult NewTask(NewBackpackTaskViewModel vm)
+        public async Task<ActionResult> NewTask(NewBackpackTaskViewModel vm)
         {
-            var v = vm;
-            return RedirectToAction("NewTask");
+            List<ItemDto> itemDtos = vm.Items.Select(itemDto => new ItemDto
+            {
+                Name = itemDto.Name,
+                Price = itemDto.Price,
+                Weight = itemDto.Weight
+            }).ToList();
+            var bt = await _service.CreateNewBackpackTask(itemDtos, vm.Name, vm.BackpackWeightLimit);
+            await _service.StartBackpackTask(bt);
+            return RedirectToAction("Index");
         }
     }
 }
