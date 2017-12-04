@@ -52,10 +52,10 @@ namespace EastBancTestAssignment.UnitTest.BLL
             service.StartBackpackTask(backpackTask);
             //  assert
             //  assert
-            Assert.AreEqual(31, backpackTask.BackpackTaskSolution.CombinationCalculated);
-            Assert.AreEqual(46500, backpackTask.BackpackTaskSolution.BestItemSetPrice);
-            Assert.AreEqual(8, backpackTask.BackpackTaskSolution.BestItemSetWeight);
-            Assert.AreEqual(3, backpackTask.BackpackTaskSolution.BestItemsSet.Count);
+            Assert.AreEqual(31, backpackTask.CombinationCalculated);
+            Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
+            Assert.AreEqual(8, backpackTask.BestItemSetWeight);
+            Assert.AreEqual(3, backpackTask.BestItemsSet.Count);
         }
     }
 }

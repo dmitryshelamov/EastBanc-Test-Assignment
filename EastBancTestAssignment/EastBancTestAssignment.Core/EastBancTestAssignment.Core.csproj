@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BackpackTask.cs" />
-    <Compile Include="Models\BackpackTaskSolution.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemCombination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
