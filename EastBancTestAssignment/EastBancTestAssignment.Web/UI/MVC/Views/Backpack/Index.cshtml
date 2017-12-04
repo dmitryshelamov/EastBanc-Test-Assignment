@@ -20,20 +20,23 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var task in Model)
+        @if (Model.Count > 0)
         {
-            <tr>
-                <th>@task.Id</th>
-                <th>@task.BackpackWeightLimit</th>
-                <th>@task.BestPrice</th>
-                <th>@task.PercentComplete</th>
-                <th>@task.Status</th>
-                <th>
-                    <div class="text-center">
-                        <a href="@Url.Action("Delete", "Backpack", new {id = task.Id})" class="btn btn-danger">Delete</a>
-                    </div>
-                </th>
-            </tr>
+            foreach (var task in Model)
+            {
+                <tr>
+                    <th>@task.Id</th>
+                    <th>@task.BackpackWeightLimit</th>
+                    <th>@task.BestPrice</th>
+                    <th>@task.PercentComplete</th>
+                    <th>@task.Status</th>
+                    <th>
+                        <div class="text-center">
+                            <a href="@Url.Action("Delete", "Backpack", new {id = task.Id})" class="btn btn-danger">Delete</a>
+                        </div>
+                    </th>
+                </tr>
+            }
         }
         </tbody>
     </table>

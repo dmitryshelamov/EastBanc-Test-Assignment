@@ -27,6 +27,8 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         {
             var vm = new NewBackpackTaskViewModel
             {
+                Name = "Test Name",
+                BackpackWeightLimit = 8,
                 Items = new List<ItemViewModel>
                 {
                     new ItemViewModel { Name = "Book", Price = 600, Weight = 1},
@@ -35,9 +37,9 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     new ItemViewModel { Name = "Laptop", Price = 40000, Weight = 2},
                     new ItemViewModel { Name = "Bowler", Price = 500, Weight = 1},
 
-                    new ItemViewModel { Name = "Lighter", Price = 400, Weight = 1},
-                    new ItemViewModel { Name = "Tent", Price = 10000, Weight = 2},
-                    new ItemViewModel { Name = "Radio", Price = 2000, Weight = 1},
+//                    new ItemViewModel { Name = "Lighter", Price = 400, Weight = 1},
+//                    new ItemViewModel { Name = "Tent", Price = 10000, Weight = 2},
+//                    new ItemViewModel { Name = "Radio", Price = 2000, Weight = 1},
                 }
             };
             return View(vm);

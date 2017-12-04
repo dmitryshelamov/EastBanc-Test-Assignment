@@ -69,6 +69,8 @@ namespace EastBancTestAssignment.BLL.Services
 
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
+
+            await _unitOfWork.CompleteAsync();
         }
 
 
