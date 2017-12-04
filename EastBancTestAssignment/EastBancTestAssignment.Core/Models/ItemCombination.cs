@@ -9,6 +9,8 @@ namespace EastBancTestAssignment.Core.Models
         public bool IsCalculated { get; set; }
 
         public List<Item> Items { get; set; }
+        public BackpackTask BackpackTask { get; set; }
+
 
         public ItemCombination()
         {
