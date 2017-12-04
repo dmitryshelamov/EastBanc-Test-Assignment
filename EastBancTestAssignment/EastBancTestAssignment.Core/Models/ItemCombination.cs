@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EastBancTestAssignment.Core.Models
 {
@@ -11,6 +12,7 @@ namespace EastBancTestAssignment.Core.Models
 
         public ItemCombination()
         {
+            Id = Guid.NewGuid().ToString();
             Items = new List<Item>();
         }
     }

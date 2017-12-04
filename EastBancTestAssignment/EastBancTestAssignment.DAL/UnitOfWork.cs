@@ -9,11 +9,13 @@ namespace EastBancTestAssignment.DAL
     {
         private readonly AppDbContext _context;
         public IItemRepository ItemRepository { get; }
+        public IBackpackTaskRepository BackpackTaskRepository { get; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             ItemRepository = new ItemRepository(context);
+            BackpackTaskRepository = new BackpackTaskRepository(context);
         }
 
         public async Task CompleteAsync()

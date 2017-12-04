@@ -6,6 +6,7 @@ namespace EastBancTestAssignment.DAL.Interfaces
     public interface IUnitOfWork
     {
         IItemRepository ItemRepository { get; }
+        IBackpackTaskRepository BackpackTaskRepository { get; }
         Task CompleteAsync();
     }
 }

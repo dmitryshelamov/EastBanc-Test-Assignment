@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EastBancTestAssignment.BLL.DTOs;
 using EastBancTestAssignment.BLL.Services;
 using NUnit.Framework;
@@ -24,38 +25,38 @@ namespace EastBancTestAssignment.UnitTest.BLL
         }
 
         [Test]
-        public void CreateNewBackpackTask_PassValidArgs_ShouldReturnBackpackTask()
+        public async Task CreateNewBackpackTask_PassValidArgs_ShouldReturnBackpackTask()
         {
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
             BackpackTaskService service = new BackpackTaskService();
             //  act
-            var backpackTask = service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
+            var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
             //  assert
             Assert.NotNull(backpackTask);
             Assert.AreEqual(taskName, backpackTask.Name);
             Assert.AreEqual(weightLimit, backpackTask.WeightLimit);
-            Assert.AreEqual(_itemDtos.Count, backpackTask.Items.Count);
+            Assert.AreEqual(_itemDtos.Count, backpackTask.ItemDtos.Count);
         }
 
 
         [Test]
-        public void StartBackpackTask_PassValidBackpackTask_ShouldCalculateCorrect()
+        public async Task StartBackpackTask_PassValidBackpackTask_ShouldCalculateCorrect()
         {
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
             BackpackTaskService service = new BackpackTaskService();
-            var backpackTask = service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
+            var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
             //  act
-            service.StartBackpackTask(backpackTask);
+            await service.StartBackpackTask(backpackTask);
             //  assert
             //  assert
             Assert.AreEqual(31, backpackTask.CombinationCalculated);
             Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
             Assert.AreEqual(8, backpackTask.BestItemSetWeight);
-            Assert.AreEqual(3, backpackTask.BestItemsSet.Count);
+            Assert.AreEqual(3, backpackTask.BestItemDtosSet.Count);
         }
     }
 }

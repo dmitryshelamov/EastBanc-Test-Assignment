@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EastBancTestAssignment.BLL.DTOs;
 using EastBancTestAssignment.BLL.Interfaces;
 using EastBancTestAssignment.Core.Models;
+using EastBancTestAssignment.DAL;
+using EastBancTestAssignment.DAL.Interfaces;
 
 namespace EastBancTestAssignment.BLL.Services
 {
     public class BackpackTaskService : IBackpackTaskService
     {
-        public BackpackTask CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public BackpackTaskService()
+        {
+            _unitOfWork = new UnitOfWork(new AppDbContext());
+        }
+
+        public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
         {
             //  convert itemDtos to items
             List<Item> items = itemDtos.Select(itemDto => new Item
@@ -27,12 +37,23 @@ namespace EastBancTestAssignment.BLL.Services
                 WeightLimit = backpackWeightLimit
             };
 
+            //  save to databaser
+            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
+            await _unitOfWork.CompleteAsync();
+
             //  and return it to client
-            return backpackTask;
+            return new BackpackTaskDto
+            {
+                Id = backpackTask.Id,
+                Name = backpackTask.Name,
+                ItemDtos = itemDtos,
+                WeightLimit = backpackTask.WeightLimit
+            };
         }
 
-        public void StartBackpackTask(BackpackTask backpackTask)
+        public async Task StartBackpackTask(BackpackTaskDto backpackTaskDto)
         {
+            BackpackTask backpackTask = await _unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
             //  set start time
             backpackTask.StartTime = DateTime.Now;
             backpackTask.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;

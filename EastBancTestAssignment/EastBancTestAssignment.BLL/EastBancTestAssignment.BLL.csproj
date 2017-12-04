@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\BackpackTaskDto.cs" />
+    <Compile Include="DTOs\ItemCombinationDto.cs" />
     <Compile Include="DTOs\ItemDto.cs" />
     <Compile Include="Interfaces\IBackpackTaskService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
