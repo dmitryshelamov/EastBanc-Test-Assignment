@@ -55,6 +55,10 @@
     <Compile Include="Migrations\201712041750518_InitialModel.Designer.cs">
       <DependentUpon>201712041750518_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712051945524_ModifyDomainModels.cs" />
+    <Compile Include="Migrations\201712051945524_ModifyDomainModels.Designer.cs">
+      <DependentUpon>201712051945524_ModifyDomainModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Repositories\IBackpackTaskRepository.cs" />
@@ -75,6 +79,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712041750518_InitialModel.resx">
       <DependentUpon>201712041750518_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712051945524_ModifyDomainModels.resx">
+      <DependentUpon>201712051945524_ModifyDomainModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
