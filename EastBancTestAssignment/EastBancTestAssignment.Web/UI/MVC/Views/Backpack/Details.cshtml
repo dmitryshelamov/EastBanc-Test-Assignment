@@ -81,7 +81,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model.BestItemSet.Count > 0)
+                                @if (Model.BestItemSet != null && Model.BestItemSet.Count > 0)
                                 {
                                     foreach (var task in Model.BestItemSet)
                                     {

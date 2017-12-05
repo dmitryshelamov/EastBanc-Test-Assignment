@@ -95,30 +95,35 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         {
             var backpackTaskDto = await _service.GetBackpackTask(id);
 
-            var vm = new BackpackTaskSolutionViewModel
+            var vm = new BackpackTaskSolutionViewModel();
+
+            vm.Id = backpackTaskDto.Id;
+            vm.Name = backpackTaskDto.Name;
+            vm.WeightLimit = backpackTaskDto.WeightLimit;
+            vm.Status = GetStatus(backpackTaskDto);
+            vm.Items = backpackTaskDto.ItemDtos.Select(item => new ItemViewModel
             {
-                Id = backpackTaskDto.Id,
-                Name = backpackTaskDto.Name,
-                WeightLimit = backpackTaskDto.WeightLimit,
-                Status = GetStatus(backpackTaskDto),
-                BestItemSetWeight = backpackTaskDto.BestItemSetWeight,
-                Items = backpackTaskDto.ItemDtos.Select(item => new ItemViewModel
+                Id = item.Id,
+                Name = item.Name,
+                Price = item.Price,
+                Weight = item.Weight
+            }).ToList();
+
+            if (vm.Status == Complete)
+            {
+                vm.BestItemSetWeight = backpackTaskDto.BestItemSetWeight;
+                vm.BestPrice = backpackTaskDto.BestItemSetPrice;
+                vm.BestItemSet = backpackTaskDto.BestItemDtosSet.Select(item => new ItemViewModel
                 {
                     Id = item.Id,
                     Name = item.Name,
                     Price = item.Price,
                     Weight = item.Weight
-                }).ToList(),
-                BestPrice = backpackTaskDto.BestItemSetPrice,
-                BestItemSet = backpackTaskDto.BestItemDtosSet.Select(item => new ItemViewModel
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Weight = item.Weight
-                }).ToList(),
-                CalculationTime = backpackTaskDto.EndTime - backpackTaskDto.StartTime
-            };
+                }).ToList();
+                vm.CalculationTime = backpackTaskDto.EndTime - backpackTaskDto.StartTime;
+            }
+
+            
 
             return View(vm);
         }
