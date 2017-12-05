@@ -21,13 +21,14 @@
 
         </div>
     </div>
-
+        
     <hr/>
 
     <div>
         <table id="table-item" class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th>Number</th>
                 <th>Item Name</th>
                 <th>Price</th>
                 <th>Weight</th>
@@ -37,6 +38,7 @@
             <tbody>
 
             <tr class="template">
+                <th class="row-number"></th>
                 <th class="item-name">
                     <input type="text" value="" class="form-control name-input"/>
                 </th>
@@ -56,28 +58,22 @@
             @for (var i = 0; i < Model.Items.Count; i++)
             {
                 var item = Model.Items[i];
-                <tr>
-
-
-                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})</th>*@
-                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})</th>*@
-                    @*                <th>@Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})</th>*@
-
-
-                    <th>
-                        @Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})
-                        <input type="hidden" name="Items[@(i)].Name" value="@item.Name"/>
+                <tr class="data-row">
+                    <th class="row-number">@i</th>
+                    <th class="item-name">
+@*                        @Html.TextBoxFor(m => m.Items[i].Name, new {@class = "form-control"})*@
+                        <input type="text" name="Items[@(i)].Name" value="@item.Name"  class="form-control"/>
                     </th>
-                    <th>
-                        <input type="hidden" name="Items[@(i)].Price" value="@item.Price"/>
-                        @Html.TextBoxFor(m => m.Items[i].Price, new {@class = "form-control"})
+                    <th class="item-price">
+                        <input type="text" name="Items[@(i)].Price" value="@item.Price" class="form-control"/>
+@*                        @Html.TextBoxFor(m => m.Items[i].Price, new { @class = "form-control" })*@
                     </th>
-                    <th>
-                        <input type="hidden" name="Items[@(i)].Weight" value="@item.Weight"/>
-                        @Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})
+                    <th class="item-weight">
+                        <input type="text" name="Items[@(i)].Weight" value="@item.Weight" class="form-control"/>
+@*                        @Html.TextBoxFor(m => m.Items[i].Weight, new {@class = "form-control"})*@
                     </th>
 
-                    <th>
+                    <th class="item-delete">
                         <div class="text-center">
                             <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
                         </div>
