@@ -22,18 +22,25 @@ namespace EastBancTestAssignment.BLL.Services
         public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
         {
             //  convert itemDtos to items
-            List<Item> items = itemDtos.Select(itemDto => new Item
-                {
-                    Name = itemDto.Name,
-                    Price = itemDto.Price,
-                    Weight = itemDto.Weight
-                }).ToList();
+            //            List<Item> items = itemDtos.Select(itemDto => new Item
+            //                {
+            //                    Name = itemDto.Name,
+            //                    Price = itemDto.Price,
+            //                    Weight = itemDto.Weight
+            //                }).ToList();
+
+            List<BackpackItems> backpackItems = itemDtos.Select(itemDto => new Item
+            {
+                Name = itemDto.Name,
+                Price = itemDto.Price,
+                Weight = itemDto.Weight
+            }).Select(item => new BackpackItems { Item = item }).ToList();
 
             //  create task
             BackpackTask backpackTask = new BackpackTask
             {
                 Name = taskName,
-                Items = items,
+                BackpackItems = backpackItems,
                 WeightLimit = backpackWeightLimit
             };
 
@@ -56,16 +63,28 @@ namespace EastBancTestAssignment.BLL.Services
             BackpackTask backpackTask = await _unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
             //  set start time
             backpackTask.StartTime = DateTime.Now;
-            backpackTask.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;
+//            backpackTask.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;
             //  first we need to generate all possible unique sets of items
-            if (backpackTask.ItemCombinations == null)
+            if (backpackTask.ItemCombinationSets == null || backpackTask.ItemCombinationSets.Count == 0)
             {
                 //  generate item combinations
-                backpackTask.ItemCombinations = new List<ItemCombination>();
-                GenerateCombination(backpackTask.Items, backpackTask.ItemCombinations);
+                backpackTask.ItemCombinationSets = new List<ItemCombinationSet>();
+                List<Item> items = backpackTask.BackpackItems.Select(backpackTaskBackpackItem => backpackTaskBackpackItem.Item).ToList();
+                List<List<Item>> result = new List<List<Item>>();
+                GenerateCombination(items, result);
+                foreach (var combination in result)
+                {
+                    List<ItemCombination> itemCombinations = new List<ItemCombination>();
+                    foreach (var item in combination)
+                    {
+                        itemCombinations.Add(new ItemCombination { Item = item });
+                    }
+
+                    backpackTask.ItemCombinationSets.Add(new ItemCombinationSet() { ItemCombinations = itemCombinations });
+                }
             }
 
-            CalculateBestItemSet(backpackTask);
+            await CalculateBestItemSet(backpackTask);
 
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
@@ -98,36 +117,36 @@ namespace EastBancTestAssignment.BLL.Services
                 Id = backpackTask.Id,
                 Name = backpackTask.Name,
                 WeightLimit = backpackTask.WeightLimit,
-                ItemDtos = backpackTask.Items.Select(item => new ItemDto
+                ItemDtos = backpackTask.BackpackItems.Select(bi => new ItemDto
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Weight = item.Weight
+                    Id = bi.Item.Id,
+                    Name = bi.Item.Name,
+                    Price = bi.Item.Price,
+                    Weight = bi.Item.Weight
                 }).ToList(),
                 BestItemSetPrice = backpackTask.BestItemSetPrice,
                 BestItemSetWeight = backpackTask.BestItemSetWeight,
-                BestItemDtosSet = backpackTask.BestItemsSet.Select(item => new ItemDto
+                BestItemDtosSet = backpackTask.BackpackItems.Select(bis => new ItemDto
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Weight = item.Weight
+                    Id = bis.Item.Id,
+                    Name = bis.Item.Name,
+                    Price = bis.Item.Price,
+                    Weight = bis.Item.Weight
                 }).ToList(),
                 StartTime = backpackTask.StartTime,
                 EndTime = backpackTask.EndTime,
-                NumberOfUniqueItemCombination = backpackTask.NumberOfUniqueItemCombination,
+                NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.ItemCombinationSets.Count) - 1,
                 CombinationCalculated = backpackTask.CombinationCalculated,
-                ItemCombinationDtos = backpackTask.ItemCombinations.Select(ic => new ItemCombinationDto
+                ItemCombinationDtos = backpackTask.ItemCombinationSets.Select(ic => new ItemCombinationDto
                 {
                     Id = ic.Id,
                     IsCalculated = ic.IsCalculated,
-                    ItemDtos = ic.Items.Select(item => new ItemDto
+                    ItemDtos = ic.ItemCombinations.Select(c => new ItemDto
                     {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Price = item.Price,
-                        Weight = item.Weight
+                        Id = c.Item.Id,
+                        Name = c.Item.Name,
+                        Price = c.Item.Price,
+                        Weight = c.Item.Weight
                     }).ToList()
                 }).ToList()
             };
@@ -135,39 +154,39 @@ namespace EastBancTestAssignment.BLL.Services
 
 
 
-        private void GenerateCombination(List<Item> set, List<ItemCombination> result)
+        private void GenerateCombination(List<Item> set, List<List<Item>> result)
         {
-            result.Add(new ItemCombination { Items = set });
+            result.Add(set);
             GenerateCombinationRecursive(set, result);
         }
 
-        private void GenerateCombinationRecursive(List<Item> set, List<ItemCombination> result)
+        private void GenerateCombinationRecursive(List<Item> set, List<List<Item>> result)
         {
             for (int i = 0; i < set.Count; i++)
             {
                 List<Item> temp = new List<Item>(set.Where((s, index) => index != i));
 
-                if (temp.Count > 0 && !result.Where(l => l.Items.Count == temp.Count).Any(l => l.Items.SequenceEqual(temp)))
+                if (temp.Count > 0 && !result.Where(l => l.Count == temp.Count).Any(l => l.SequenceEqual(temp)))
                 {
-                    result.Add(new ItemCombination { Items = temp });
+                    result.Add(temp);
                     GenerateCombinationRecursive(temp, result);
                 }
             }
         }
 
-        private void CalculateBestItemSet(BackpackTask backpackTask)
+        private async Task CalculateBestItemSet(BackpackTask backpackTask)
         {
             //  iterate over all item combinations
-            foreach (var itemCombination in backpackTask.ItemCombinations)
+            foreach (var set in backpackTask.ItemCombinationSets)
             {
                 //  iterate over all item int current item set
                 //  calculate total weight and price of current item set
                 var totalWeight = 0;
                 var totalPrice = 0;
-                foreach (var item in itemCombination.Items)
+                foreach (var itemCombination in set.ItemCombinations)
                 {
-                    totalWeight += item.Weight;
-                    totalPrice += item.Price;
+                    totalWeight += itemCombination.Item.Weight;
+                    totalPrice += itemCombination.Item.Price;
                 }
 
                 //  check if we ok with totalWeight and current price of item set is greater that current best item set price
@@ -177,13 +196,24 @@ namespace EastBancTestAssignment.BLL.Services
                     //  update current solution
                     backpackTask.BestItemSetPrice = totalPrice;
                     backpackTask.BestItemSetWeight = totalWeight;
-                    backpackTask.BestItemsSet = itemCombination.Items;
+                    List<Item> items = new List<Item>();
+                    foreach (var itemCombo in set.ItemCombinations)
+                    {
+                        items.Add(itemCombo.Item);
+                    }
+                    backpackTask.BestItemSet = new List<BackpackBestItemSet>();
+                    foreach (var item in items)
+                    {
+                        backpackTask.BestItemSet.Add(new BackpackBestItemSet { Item = item });
+                    }
                 }
 
                 //  mark current set as calucated
-                itemCombination.IsCalculated = true;
+                set.IsCalculated = true;
                 //  update calculation counter
                 backpackTask.CombinationCalculated++;
+
+                await _unitOfWork.CompleteAsync();
             }
         }
     }

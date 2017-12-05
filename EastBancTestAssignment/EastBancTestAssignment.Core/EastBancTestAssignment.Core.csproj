@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BackpackBestItemSet.cs" />
+    <Compile Include="Models\BackpackItems.cs" />
     <Compile Include="Models\BackpackTask.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemCombination.cs" />
+    <Compile Include="Models\ItemCombinationSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

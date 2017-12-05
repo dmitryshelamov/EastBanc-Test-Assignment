@@ -15,22 +15,39 @@ namespace EastBancTestAssignment.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BackpackTask>()
-                .HasMany(b => b.Items)
-                .WithRequired(i => i.BackpackTask)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<BackpackItems>()
+                .HasKey(i => new { i.BackpackTaskId, i.ItemId });
 
-            modelBuilder.Entity<BackpackTask>()
-                .HasMany(b => b.BestItemsSet)
-                .WithMany(i => i.BestPrice);
+            modelBuilder.Entity<BackpackItems>()
+                .HasRequired(i => i.BackpackTask)
+                .WithMany(i => i.BackpackItems)
+                .HasForeignKey(i => i.BackpackTaskId)
+                .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<BackpackTask>()
-                .HasMany(b => b.ItemCombinations)
-                .WithRequired(c => c.BackpackTask);
+            modelBuilder.Entity<BackpackBestItemSet>()
+                .HasKey(i => new { i.BackpackTaskId, i.ItemId });
+
+            modelBuilder.Entity<BackpackBestItemSet>()
+                .HasRequired(i => i.BackpackTask)
+                .WithMany(i => i.BestItemSet)
+                .HasForeignKey(i => i.BackpackTaskId)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ItemCombination>()
-                .HasMany(c => c.Items)
-                .WithMany(i => i.ItemCombinations);
+                .HasKey(i => new { i.ItemCombinationSetId, i.ItemId });
+
+            modelBuilder.Entity<ItemCombinationSet>()
+                .HasMany(i => i.ItemCombinations)
+                .WithRequired(i => i.ItemCombinationSet)
+                .HasForeignKey(i => i.ItemCombinationSetId)
+                .WillCascadeOnDelete(true);
+
+
+            modelBuilder.Entity<BackpackTask>()
+                .HasMany(b => b.ItemCombinationSets)
+                .WithRequired(c => c.BackpackTask)
+                .HasForeignKey(c => c.BackpackTaskId)
+                .WillCascadeOnDelete(true);
 
             base.OnModelCreating(modelBuilder);
         }

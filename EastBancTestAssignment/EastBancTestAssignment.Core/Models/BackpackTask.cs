@@ -8,25 +8,22 @@ namespace EastBancTestAssignment.Core.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public int WeightLimit { get; set; }
-        public List<Item> Items { get; set; }
-
-        public int BestItemSetPrice { get; set; }
-        public int BestItemSetWeight { get; set; }
-        public List<Item> BestItemsSet { get; set; }
-
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public int BestItemSetPrice { get; set; }
+        public int BestItemSetWeight { get; set; }
+        public int CombinationCalculated { get; set; }
 
-        public double NumberOfUniqueItemCombination { get; set; }
-        public double CombinationCalculated { get; set; }
-
-        public List<ItemCombination> ItemCombinations { get; set; }
+        public List<BackpackItems> BackpackItems { get; set; }
+        public List<BackpackBestItemSet> BestItemSet { get; set; }
+        public List<ItemCombinationSet> ItemCombinationSets { get; set; }
 
         public BackpackTask()
         {
-            BestItemsSet = new List<Item>();
             Id = Guid.NewGuid().ToString();
-            Items = new List<Item>();
+            BackpackItems = new List<BackpackItems>();
+            BestItemSet = new List<BackpackBestItemSet>();
+            ItemCombinationSets = new List<ItemCombinationSet>();
         }
     }
 }
