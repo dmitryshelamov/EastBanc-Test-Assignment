@@ -11,6 +11,8 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
     public class BackpackController : Controller
     {
         private BackpackTaskService _service;
+        public const string InProgress = "In Progress";
+        public const string Complete = "Complete";
         public BackpackController()
         {
             _service = BackpackTaskService.GetInstance();
@@ -23,16 +25,16 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             List<BackpackTaskViewModel> list = new List<BackpackTaskViewModel>();
             foreach (var backpackTask in taskDtos)
             {
-                var percent = (int) (backpackTask.CombinationCalculated / backpackTask.ItemCombinationDtos.Count) * 100;
-                bool status = percent == 100;
+                
+
                 list.Add(new BackpackTaskViewModel
                 {
                     Id = backpackTask.Id,
                     Name = backpackTask.Name,
                     BackpackWeightLimit = backpackTask.WeightLimit,
                     BestPrice = backpackTask.BestItemSetPrice,
-                    PercentComplete = percent,
-                    Status = status
+                    PercentComplete = GetPercent(backpackTask),
+                    Status = GetStatus(backpackTask)
                 });
             }
 
@@ -53,11 +55,11 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     new ItemViewModel { Name = "Laptop", Price = 40000, Weight = 2},
                     new ItemViewModel { Name = "Bowler", Price = 500, Weight = 1},
 
-//                    new ItemViewModel { Name = "Item 1", Price = 100, Weight = 1},
-//                    new ItemViewModel { Name = "Item 2", Price = 200, Weight = 1},
-//                    new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
-//                    new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
-//                    new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
+                    new ItemViewModel { Name = "Item 1", Price = 100, Weight = 1},
+                    new ItemViewModel { Name = "Item 2", Price = 200, Weight = 1},
+                    new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
+                    new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
+                    new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
 
 
                     new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
@@ -92,18 +94,13 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         public async Task<ActionResult> Details(string id)
         {
             var backpackTaskDto = await _service.GetBackpackTask(id);
-            var status = "In Progress";
-            if ((int)backpackTaskDto.CombinationCalculated == (int)backpackTaskDto.NumberOfUniqueItemCombination)
-            {
-                status = "Complete";
-            }
 
             var vm = new BackpackTaskSolutionViewModel
             {
                 Id = backpackTaskDto.Id,
                 Name = backpackTaskDto.Name,
                 WeightLimit = backpackTaskDto.WeightLimit,
-                Status = status,
+                Status = GetStatus(backpackTaskDto),
                 BestItemSetWeight = backpackTaskDto.BestItemSetWeight,
                 Items = backpackTaskDto.ItemDtos.Select(item => new ItemViewModel
                 {
@@ -130,6 +127,19 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         {
             await _service.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        private string GetStatus(BackpackTaskDto backpackTask)
+        {
+            var status = InProgress;
+            if (GetPercent(backpackTask) == 100)
+                status = Complete;
+            return status;
+        }
+
+        private int GetPercent(BackpackTaskDto backpackTask)
+        {
+            return (int)(backpackTask.CombinationCalculated / backpackTask.ItemCombinationDtos.Count) * 100;
         }
 
     }

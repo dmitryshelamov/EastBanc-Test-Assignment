@@ -90,7 +90,8 @@ namespace EastBancTestAssignment.BLL.Services
                 }
             }
 
-            await CalculateBestItemSet(backpackTask);
+//            await CalculateBestItemSet(backpackTask);
+            await CalculateBestItemSet(backpackTask, unitOfWork);
 
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
@@ -193,7 +194,7 @@ namespace EastBancTestAssignment.BLL.Services
             }
         }
 
-        private async Task CalculateBestItemSet(BackpackTask backpackTask)
+        private async Task CalculateBestItemSet(BackpackTask backpackTask, UnitOfWork unitOfWork)
         {
             //  iterate over all item combinations
             foreach (var set in backpackTask.ItemCombinationSets)
@@ -230,10 +231,10 @@ namespace EastBancTestAssignment.BLL.Services
                 //  mark current set as calucated
                 set.IsCalculated = true;
                 //  update calculation counter
-                await Task.Delay(300);
+//                await Task.Delay(300);
                 backpackTask.CombinationCalculated++;
 
-                await UnitOfWork.UnitOfWorkFactory().CompleteAsync();
+                await unitOfWork.CompleteAsync();
                 double percent = ((double)backpackTask.CombinationCalculated / (double)backpackTask.ItemCombinationSets.Count) * 100;
 //                Debug.WriteLine($"Percant: {percent}%");
                 if (OnUpdatProgressEventHandler != null)
