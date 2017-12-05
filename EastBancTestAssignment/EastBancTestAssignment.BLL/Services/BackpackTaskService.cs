@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using EastBancTestAssignment.BLL.DTOs;
@@ -12,11 +13,22 @@ namespace EastBancTestAssignment.BLL.Services
 {
     public class BackpackTaskService : IBackpackTaskService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        public EventHandler<TaskProgressEventArgs> OnUpdatProgressEventHandler;
+        public EventHandler<TaskCompleteEventArgs> OnTaskCompleteEventHandler;
+        //        private readonly IUnitOfWork _unitOfWork;
 
-        public BackpackTaskService()
+        private BackpackTaskService()
         {
-            _unitOfWork = new UnitOfWork(new AppDbContext());
+//            _unitOfWork = new UnitOfWork(new AppDbContext());
+        }
+
+        private static BackpackTaskService _instance;
+
+        public static BackpackTaskService GetInstance()
+        {
+            if (_instance == null)
+                _instance = new BackpackTaskService();
+            return _instance;
         }
 
         public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName,
@@ -38,8 +50,9 @@ namespace EastBancTestAssignment.BLL.Services
             };
 
             //  save to databaser
-            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
-            await _unitOfWork.CompleteAsync();
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            unitOfWork.BackpackTaskRepository.Add(backpackTask);
+            await unitOfWork.CompleteAsync();
 
             //  and return it to client
             return new BackpackTaskDto
@@ -53,7 +66,8 @@ namespace EastBancTestAssignment.BLL.Services
 
         public async Task StartBackpackTask(BackpackTaskDto backpackTaskDto)
         {
-            BackpackTask backpackTask = await _unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            BackpackTask backpackTask = await unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
             //  set start time
             backpackTask.StartTime = DateTime.Now;
             //  first we need to generate all possible unique sets of items
@@ -81,12 +95,25 @@ namespace EastBancTestAssignment.BLL.Services
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
 
-            await _unitOfWork.CompleteAsync();
+            await unitOfWork.CompleteAsync();
+
+            if (OnTaskCompleteEventHandler != null)
+            {
+                OnTaskCompleteEventHandler(this, new TaskCompleteEventArgs()
+                {
+                    Id = backpackTask.Id,
+                    WeightLimit = backpackTask.WeightLimit,
+                    BestItemPrice = backpackTask.BestItemSetPrice,
+                    Percent = 100,
+                    Status = "Complete"
+                });
+            }
         }
 
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasks()
         {
-            List<BackpackTask> tasks = await _unitOfWork.BackpackTaskRepository.GetAll();
+  
+            List<BackpackTask> tasks = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.GetAll();
             List<BackpackTaskDto> backpackTaskDtos = new List<BackpackTaskDto>();
             foreach (var backpackTask in tasks)
             {
@@ -98,7 +125,7 @@ namespace EastBancTestAssignment.BLL.Services
 
         public async Task<BackpackTaskDto> GetBackpackTask(string id)
         {
-            BackpackTask backpack = await _unitOfWork.BackpackTaskRepository.Get(id);
+            BackpackTask backpack = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.Get(id);
             return ConvertToDto(backpack);
         }
 
@@ -203,16 +230,28 @@ namespace EastBancTestAssignment.BLL.Services
                 //  mark current set as calucated
                 set.IsCalculated = true;
                 //  update calculation counter
+                await Task.Delay(300);
                 backpackTask.CombinationCalculated++;
 
-                await _unitOfWork.CompleteAsync();
+                await UnitOfWork.UnitOfWorkFactory().CompleteAsync();
+                double percent = ((double)backpackTask.CombinationCalculated / (double)backpackTask.ItemCombinationSets.Count) * 100;
+//                Debug.WriteLine($"Percant: {percent}%");
+                if (OnUpdatProgressEventHandler != null)
+                {
+                    OnUpdatProgressEventHandler(this, new TaskProgressEventArgs()
+                    {
+                        Id = backpackTask.Id,
+                        Percent = (int)percent
+                    });
+                }
             }
         }
 
         public async Task Delete(string id)
         {
-            await _unitOfWork.BackpackTaskRepository.Remove(id);
-            await _unitOfWork.CompleteAsync();
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            await unitOfWork.BackpackTaskRepository.Remove(id);
+            await unitOfWork.CompleteAsync();
         }
     }
 }

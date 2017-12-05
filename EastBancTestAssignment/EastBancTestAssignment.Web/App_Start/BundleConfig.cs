@@ -9,6 +9,11 @@ namespace EastBancTestAssignment.Web.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/UI/Scripts/jquery-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
+                "~/UI/Scripts/jquery.signalR-{version}.js",
+                "~/UI/Scripts/Custom/SignalRClient.js"));
+
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/UI/Scripts/bootstrap.js"));
 

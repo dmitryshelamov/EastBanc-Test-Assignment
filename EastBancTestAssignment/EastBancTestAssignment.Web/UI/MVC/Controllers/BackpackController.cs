@@ -13,7 +13,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         private BackpackTaskService _service;
         public BackpackController()
         {
-            _service = new BackpackTaskService();
+            _service = BackpackTaskService.GetInstance();
         }
 
         // GET: Backpack
@@ -28,6 +28,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                 list.Add(new BackpackTaskViewModel
                 {
                     Id = backpackTask.Id,
+                    Name = backpackTask.Name,
                     BackpackWeightLimit = backpackTask.WeightLimit,
                     BestPrice = backpackTask.BestItemSetPrice,
                     PercentComplete = percent,
@@ -52,6 +53,19 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     new ItemViewModel { Name = "Laptop", Price = 40000, Weight = 2},
                     new ItemViewModel { Name = "Bowler", Price = 500, Weight = 1},
 
+//                    new ItemViewModel { Name = "Item 1", Price = 100, Weight = 1},
+//                    new ItemViewModel { Name = "Item 2", Price = 200, Weight = 1},
+//                    new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
+//                    new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
+//                    new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
+
+
+                    new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
+                    new ItemViewModel { Name = "Item 7", Price = 700, Weight = 3},
+                    new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
+                    new ItemViewModel { Name = "Item 9", Price = 900, Weight = 2},
+                    new ItemViewModel { Name = "Item 10", Price = 100, Weight = 4},
+
 //                    new ItemViewModel { Name = "Lighter", Price = 400, Weight = 1},
 //                    new ItemViewModel { Name = "Tent", Price = 10000, Weight = 2},
 //                    new ItemViewModel { Name = "Radio", Price = 2000, Weight = 1},
@@ -70,7 +84,8 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                 Weight = itemDto.Weight
             }).ToList();
             var bt = await _service.CreateNewBackpackTask(itemDtos, vm.Name, vm.BackpackWeightLimit);
-            await _service.StartBackpackTask(bt);
+            Task.Run(() => _service.StartBackpackTask(bt));
+//            await _service.StartBackpackTask(bt);
             return RedirectToAction("Index");
         }
 

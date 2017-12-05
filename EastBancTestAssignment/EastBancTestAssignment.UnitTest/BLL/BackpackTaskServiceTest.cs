@@ -30,7 +30,7 @@ namespace EastBancTestAssignment.UnitTest.BLL
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
-            BackpackTaskService service = new BackpackTaskService();
+            BackpackTaskService service = BackpackTaskService.GetInstance();
             //  act
             var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
             //  assert
@@ -47,7 +47,7 @@ namespace EastBancTestAssignment.UnitTest.BLL
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
-            BackpackTaskService service = new BackpackTaskService();
+            BackpackTaskService service = BackpackTaskService.GetInstance();
             var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
             //  act
             await service.StartBackpackTask(backpackTask);
