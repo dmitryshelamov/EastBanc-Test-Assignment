@@ -80,7 +80,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             var status = "In Progress";
             if ((int)backpackTaskDto.CombinationCalculated == (int)backpackTaskDto.NumberOfUniqueItemCombination)
             {
-                status = "Done";
+                status = "Complete";
             }
 
             var vm = new BackpackTaskSolutionViewModel

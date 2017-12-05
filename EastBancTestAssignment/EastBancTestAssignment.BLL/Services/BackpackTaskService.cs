@@ -118,12 +118,12 @@ namespace EastBancTestAssignment.BLL.Services
                 }).ToList(),
                 BestItemSetPrice = backpackTask.BestItemSetPrice,
                 BestItemSetWeight = backpackTask.BestItemSetWeight,
-                BestItemDtosSet = backpackTask.BackpackItems.Select(bis => new ItemDto
+                BestItemDtosSet = backpackTask.BestItemSet.Select(bis => new ItemDto
                 {
-                    Id = bis.Id,
-                    Name = bis.Name,
-                    Price = bis.Price,
-                    Weight = bis.Weight
+                    Id = bis.Item.Id,
+                    Name = bis.Item.Name,
+                    Price = bis.Item.Price,
+                    Weight = bis.Item.Weight
                 }).ToList(),
                 StartTime = backpackTask.StartTime,
                 EndTime = backpackTask.EndTime,
