@@ -9,5 +9,6 @@ namespace EastBancTestAssignment.DAL.Interfaces.Repositories
         void Add(BackpackTask backpackTask);
         Task<BackpackTask> Get(string id);
         Task<List<BackpackTask>> GetAll();
+        Task Remove(string id);
     }
 }

@@ -110,5 +110,12 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 
             return View(vm);
         }
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _service.Delete(id);
+            return RedirectToAction("Index");
+        }
+
     }
 }

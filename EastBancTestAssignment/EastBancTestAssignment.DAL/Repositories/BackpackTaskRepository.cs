@@ -38,5 +38,12 @@ namespace EastBancTestAssignment.DAL.Repositories
 //                .Include(b => b.ItemCombinations)
                 .ToListAsync();
         }
+
+        public async Task Remove(string id)
+        {
+            var backpack = await _context.BackpackTasks.Include(b => b.ItemCombinationSets).Include(b => b.BestItemSet)
+                .Include(b => b.BackpackItems).SingleOrDefaultAsync(t => t.Id == id);
+            _context.BackpackTasks.Remove(backpack);
+        }
     }
 }

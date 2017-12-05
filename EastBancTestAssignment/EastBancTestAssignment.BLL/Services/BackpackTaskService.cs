@@ -216,5 +216,11 @@ namespace EastBancTestAssignment.BLL.Services
                 await _unitOfWork.CompleteAsync();
             }
         }
+
+        public async Task Delete(string id)
+        {
+            await _unitOfWork.BackpackTaskRepository.Remove(id);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
