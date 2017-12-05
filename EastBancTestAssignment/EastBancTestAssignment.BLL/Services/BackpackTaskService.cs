@@ -19,28 +19,21 @@ namespace EastBancTestAssignment.BLL.Services
             _unitOfWork = new UnitOfWork(new AppDbContext());
         }
 
-        public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit)
+        public async Task<BackpackTaskDto> CreateNewBackpackTask(List<ItemDto> itemDtos, string taskName,
+            int backpackWeightLimit)
         {
             //  convert itemDtos to items
-            //            List<Item> items = itemDtos.Select(itemDto => new Item
-            //                {
-            //                    Name = itemDto.Name,
-            //                    Price = itemDto.Price,
-            //                    Weight = itemDto.Weight
-            //                }).ToList();
-
-            List<BackpackItems> backpackItems = itemDtos.Select(itemDto => new Item
+            List<Item> items = itemDtos.Select(itemDto => new Item
             {
                 Name = itemDto.Name,
                 Price = itemDto.Price,
                 Weight = itemDto.Weight
-            }).Select(item => new BackpackItems { Item = item }).ToList();
-
+            }).ToList();
             //  create task
             BackpackTask backpackTask = new BackpackTask
             {
                 Name = taskName,
-                BackpackItems = backpackItems,
+                BackpackItems = items,
                 WeightLimit = backpackWeightLimit
             };
 
@@ -63,13 +56,12 @@ namespace EastBancTestAssignment.BLL.Services
             BackpackTask backpackTask = await _unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
             //  set start time
             backpackTask.StartTime = DateTime.Now;
-//            backpackTask.NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.Items.Count) - 1;
             //  first we need to generate all possible unique sets of items
             if (backpackTask.ItemCombinationSets == null || backpackTask.ItemCombinationSets.Count == 0)
             {
                 //  generate item combinations
                 backpackTask.ItemCombinationSets = new List<ItemCombinationSet>();
-                List<Item> items = backpackTask.BackpackItems.Select(backpackTaskBackpackItem => backpackTaskBackpackItem.Item).ToList();
+                List<Item> items = backpackTask.BackpackItems;
                 List<List<Item>> result = new List<List<Item>>();
                 GenerateCombination(items, result);
                 foreach (var combination in result)
@@ -119,19 +111,19 @@ namespace EastBancTestAssignment.BLL.Services
                 WeightLimit = backpackTask.WeightLimit,
                 ItemDtos = backpackTask.BackpackItems.Select(bi => new ItemDto
                 {
-                    Id = bi.Item.Id,
-                    Name = bi.Item.Name,
-                    Price = bi.Item.Price,
-                    Weight = bi.Item.Weight
+                    Id = bi.Id,
+                    Name = bi.Name,
+                    Price = bi.Price,
+                    Weight = bi.Weight
                 }).ToList(),
                 BestItemSetPrice = backpackTask.BestItemSetPrice,
                 BestItemSetWeight = backpackTask.BestItemSetWeight,
                 BestItemDtosSet = backpackTask.BackpackItems.Select(bis => new ItemDto
                 {
-                    Id = bis.Item.Id,
-                    Name = bis.Item.Name,
-                    Price = bis.Item.Price,
-                    Weight = bis.Item.Weight
+                    Id = bis.Id,
+                    Name = bis.Name,
+                    Price = bis.Price,
+                    Weight = bis.Weight
                 }).ToList(),
                 StartTime = backpackTask.StartTime,
                 EndTime = backpackTask.EndTime,

@@ -14,14 +14,14 @@ namespace EastBancTestAssignment.Core.Models
         public int BestItemSetWeight { get; set; }
         public int CombinationCalculated { get; set; }
 
-        public List<BackpackItems> BackpackItems { get; set; }
+        public List<Item> BackpackItems { get; set; }
         public List<BackpackBestItemSet> BestItemSet { get; set; }
         public List<ItemCombinationSet> ItemCombinationSets { get; set; }
 
         public BackpackTask()
         {
             Id = Guid.NewGuid().ToString();
-            BackpackItems = new List<BackpackItems>();
+            BackpackItems = new List<Item>();
             BestItemSet = new List<BackpackBestItemSet>();
             ItemCombinationSets = new List<ItemCombinationSet>();
         }

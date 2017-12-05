@@ -15,15 +15,6 @@ namespace EastBancTestAssignment.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BackpackItems>()
-                .HasKey(i => new { i.BackpackTaskId, i.ItemId });
-
-            modelBuilder.Entity<BackpackItems>()
-                .HasRequired(i => i.BackpackTask)
-                .WithMany(i => i.BackpackItems)
-                .HasForeignKey(i => i.BackpackTaskId)
-                .WillCascadeOnDelete(true);
-
             modelBuilder.Entity<BackpackBestItemSet>()
                 .HasKey(i => new { i.BackpackTaskId, i.ItemId });
 
@@ -42,9 +33,14 @@ namespace EastBancTestAssignment.DAL
                 .HasForeignKey(i => i.ItemCombinationSetId)
                 .WillCascadeOnDelete(true);
 
-
             modelBuilder.Entity<BackpackTask>()
                 .HasMany(b => b.ItemCombinationSets)
+                .WithRequired(c => c.BackpackTask)
+                .HasForeignKey(c => c.BackpackTaskId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<BackpackTask>()
+                .HasMany(b => b.BackpackItems)
                 .WithRequired(c => c.BackpackTask)
                 .HasForeignKey(c => c.BackpackTaskId)
                 .WillCascadeOnDelete(true);
