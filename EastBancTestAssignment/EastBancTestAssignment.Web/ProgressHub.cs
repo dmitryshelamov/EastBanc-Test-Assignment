@@ -19,6 +19,11 @@ namespace EastBancTestAssignment.Web
             {
                 Clients.Caller.ReportComplete(args.Id, args.WeightLimit, args.BestItemPrice, args.Percent, args.Status);
             };
+
+            _service.OnTaskPrepareEventHandler += (sender, args) =>
+            {
+                Clients.Caller.ReportProgress(args.Id, args.Message + " " + args.Percent);
+            };
         }
     }
 }

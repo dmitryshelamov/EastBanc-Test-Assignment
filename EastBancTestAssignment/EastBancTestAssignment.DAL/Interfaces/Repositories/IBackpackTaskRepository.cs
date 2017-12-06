@@ -7,8 +7,9 @@ namespace EastBancTestAssignment.DAL.Interfaces.Repositories
     public interface IBackpackTaskRepository
     {
         void Add(BackpackTask backpackTask);
-        Task<BackpackTask> Get(string id);
-        Task<List<BackpackTask>> GetAll();
+        Task<BackpackTask> GetAsync(string id);
+        Task<List<BackpackTask>> GetAllAsync();
+        List<BackpackTask> GetAll();
         Task Remove(string id);
     }
 }

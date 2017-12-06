@@ -44,7 +44,7 @@ namespace EastBancTestAssignment.BLL.Converters
             backpackTaskDto.EndTime = backpackTask.EndTime;
             var totalCombination = (int) Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
             backpackTaskDto.TotalAmoutOfWork =
-                totalCombination * 2;
+                totalCombination;
 
             var currentProgress = 0;
 
@@ -54,7 +54,6 @@ namespace EastBancTestAssignment.BLL.Converters
             }
             else
             {
-                currentProgress = backpackTask.ItemCombinationSets.Count;
                 foreach (var itemCombinationSet in backpackTask.ItemCombinationSets)
                 {
                     if (itemCombinationSet.IsCalculated)

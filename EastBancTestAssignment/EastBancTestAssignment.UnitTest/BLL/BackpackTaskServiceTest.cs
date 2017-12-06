@@ -50,7 +50,7 @@ namespace EastBancTestAssignment.UnitTest.BLL
             BackpackTaskService service = BackpackTaskService.GetInstance();
             var backpackTask = await service.NewBackpackTask(_itemDtos, taskName, weightLimit);
             //  act
-            await service.StartBackpackTask(backpackTask);
+            await service.StartBackpackTask(backpackTask.Id);
             //  assert
             //  assert
             Assert.AreEqual(31, backpackTask.CurrentProgress);

@@ -24,10 +24,13 @@ namespace EastBancTestAssignment.BLL.Services
             _backpackTask = backpackTask;
             Id = backpackTask.Id;
             int totalCombinations = (int) Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
-            _totalAmountOfWork = totalCombinations * 2;
-            if (backpackTask.ItemCombinationSets.Count == totalCombinations)
+            _totalAmountOfWork = totalCombinations;
+            foreach (var combinationSet in backpackTask.ItemCombinationSets)
             {
-                _currentProgress = totalCombinations;
+                if (combinationSet.IsCalculated)
+                {
+                    _currentProgress++;
+                }
             }
         }
 

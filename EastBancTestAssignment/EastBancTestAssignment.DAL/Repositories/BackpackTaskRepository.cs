@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using EastBancTestAssignment.Core.Models;
 using EastBancTestAssignment.DAL.Interfaces;
@@ -21,7 +22,7 @@ namespace EastBancTestAssignment.DAL.Repositories
             _context.BackpackTasks.Add(backpackTask);
         }
 
-        public async Task<BackpackTask> Get(string id)
+        public async Task<BackpackTask> GetAsync(string id)
         {
             return await _context.BackpackTasks
                 .Include(b => b.BackpackItems)
@@ -30,13 +31,22 @@ namespace EastBancTestAssignment.DAL.Repositories
                 .SingleOrDefaultAsync(bt => bt.Id == id);
         }
 
-        public async Task<List<BackpackTask>> GetAll()
+        public async Task<List<BackpackTask>> GetAllAsync()
         {
             return await _context.BackpackTasks
                 .Include(b => b.BackpackItems)
                 .Include(b => b.BestItemSet)
                 .Include(b => b.ItemCombinationSets)
                 .ToListAsync();
+        }
+
+        public List<BackpackTask> GetAll()
+        {
+            return _context.BackpackTasks
+                .Include(b => b.BackpackItems)
+                .Include(b => b.BestItemSet)
+                .Include(b => b.ItemCombinationSets)
+                .ToList();
         }
 
         public async Task Remove(string id)

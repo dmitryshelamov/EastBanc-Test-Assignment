@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EastBancTestAssignment.BLL.Converters;
 using EastBancTestAssignment.BLL.DTOs;
@@ -17,8 +18,21 @@ namespace EastBancTestAssignment.BLL.Services
 
         public EventHandler<TaskProgressEventArgs> OnUpdatProgressEventHandler;
         public EventHandler<TaskCompleteEventArgs> OnTaskCompleteEventHandler;
+        public EventHandler<TaskPrepareEventArgs> OnTaskPrepareEventHandler;
 
-        private BackpackTaskService() { }
+
+
+        private BackpackTaskService()
+        {
+            var taskThatShoulBeStarted = UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.GetAll();
+            foreach (var backpackTask in taskThatShoulBeStarted)
+            {
+                if (backpackTask.Complete == false)
+                {
+                    StartBackpackTask(backpackTask.Id);
+                }
+            }
+        }
 
         public static BackpackTaskService GetInstance()
         {
@@ -48,13 +62,14 @@ namespace EastBancTestAssignment.BLL.Services
             return Converter.ConvertToDto(backpackTask);
         }
 
-        public async Task StartBackpackTask(BackpackTaskDto backpackTaskDto)
+        public async Task StartBackpackTask(string taskId)
         {
             //  get backpack task from db
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
-            BackpackTask backpackTask = await unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
+            BackpackTask backpackTask = await unitOfWork.BackpackTaskRepository.GetAsync(taskId);
 
-            ProgressService progressService = new ProgressService(backpackTask);
+            ProgressService progressPrepareService = new ProgressService(backpackTask);
+            ProgressService progressTaskService = new ProgressService(backpackTask);
 
             int totalCombination = (int) Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
             //  inspect backpackTask
@@ -63,22 +78,23 @@ namespace EastBancTestAssignment.BLL.Services
             {
                 //  generate item combinations
                 backpackTask.ItemCombinationSets = new List<ItemCombinationSet>();
-                GenerateCombination(backpackTask.BackpackItems, backpackTask.ItemCombinationSets, progressService);
+                GenerateCombination(backpackTask.BackpackItems, backpackTask.ItemCombinationSets, progressPrepareService);
             }
             //  get all calculated ItemCombinationSet
-            else
-            {
-                foreach (var itemCombinationSet in backpackTask.ItemCombinationSets)
-                {
-                    if (itemCombinationSet.IsCalculated == false)
-                    {
-                        progressService.UpdateProgress();
-                    }
-                }
-            }
+//            else
+//            {
+//                foreach (var itemCombinationSet in backpackTask.ItemCombinationSets)
+//                {
+//                    if (itemCombinationSet.IsCalculated)
+//                    {
+//                        progressTaskService.UpdateProgress();
+//                    }
+//                }
+//            }
             await unitOfWork.CompleteAsync();
 
-            await CalculateBestItemSet(backpackTask, progressService);
+
+            await CalculateBestItemSet(backpackTask, progressTaskService, unitOfWork);
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
             backpackTask.Complete = true;
@@ -98,9 +114,9 @@ namespace EastBancTestAssignment.BLL.Services
             }
         }
 
-        private async Task CalculateBestItemSet(BackpackTask backpackTask, ProgressService service)
+        private async Task CalculateBestItemSet(BackpackTask backpackTask, ProgressService service, UnitOfWork ofWork)
         {
-            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            var unitOfWork = ofWork;
             //  iterate over all item combinations
             foreach (var set in backpackTask.ItemCombinationSets)
             {
@@ -136,10 +152,11 @@ namespace EastBancTestAssignment.BLL.Services
                     }
 
                     //  mark current set as calucated
+                    await Task.Delay(300);
                     set.IsCalculated = true;
 
                     await unitOfWork.CompleteAsync();
-
+                    Debug.WriteLine($"Task {service.Percent}");
                     service.UpdateProgress();
                     OnUpdatProgressEventHandler?.Invoke(this, new TaskProgressEventArgs()
                     {
@@ -154,7 +171,7 @@ namespace EastBancTestAssignment.BLL.Services
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasks()
         {
   
-            List<BackpackTask> tasks = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.GetAll();
+            List<BackpackTask> tasks = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.GetAllAsync();
             List<BackpackTaskDto> backpackTaskDtos = new List<BackpackTaskDto>();
             foreach (var backpackTask in tasks)
             {
@@ -166,7 +183,7 @@ namespace EastBancTestAssignment.BLL.Services
 
         public async Task<BackpackTaskDto> GetBackpackTask(string id)
         {
-            BackpackTask backpack = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.Get(id);
+            BackpackTask backpack = await UnitOfWork.UnitOfWorkFactory().BackpackTaskRepository.GetAsync(id);
             return Converter.ConvertToDto(backpack);
         }
 
@@ -178,11 +195,13 @@ namespace EastBancTestAssignment.BLL.Services
                 ItemCombinations = set.Select(item => new ItemCombination { Item = item }).ToList()
             });
             service.UpdateProgress();
-            OnUpdatProgressEventHandler?.Invoke(this, new TaskProgressEventArgs()
+            OnTaskPrepareEventHandler?.Invoke(this, new TaskPrepareEventArgs()
             {
                 Id = service.Id,
-                Percent = service.Percent
+                Percent = service.Percent,
+                Message = "Preparing... "
             });
+
             GenerateCombinationRecursive(set, result, service);
         }
 
@@ -201,11 +220,13 @@ namespace EastBancTestAssignment.BLL.Services
                     result.Add(new ItemCombinationSet { ItemCombinations = temp.Select(item => new ItemCombination { Item = item }).ToList() });
                     GenerateCombinationRecursive(temp, result, service);
                     service.UpdateProgress();
-                    OnUpdatProgressEventHandler?.Invoke(this, new TaskProgressEventArgs()
+                    OnTaskPrepareEventHandler?.Invoke(this, new TaskPrepareEventArgs()
                     {
                         Id = service.Id,
-                        Percent = service.Percent
+                        Percent = service.Percent,
+                        Message = "Preparing... "
                     });
+                    Thread.Sleep(300);
                 }
             }
         }
@@ -214,9 +235,13 @@ namespace EastBancTestAssignment.BLL.Services
 
         public async Task Delete(string id)
         {
-            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
-            await unitOfWork.BackpackTaskRepository.Remove(id);
-            await unitOfWork.CompleteAsync();
+//            Task.Run((async () =>
+//                {
+                    var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+                    await unitOfWork.BackpackTaskRepository.Remove(id);
+                    await unitOfWork.CompleteAsync();
+//                }
+//            ));
         }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="Services\BackpackTaskService.cs" />
     <Compile Include="Services\ProgressService.cs" />
     <Compile Include="Services\TaskCompleteEventArgs.cs" />
+    <Compile Include="Services\TaskPrepareEventArgs.cs" />
     <Compile Include="TaskProgressEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>

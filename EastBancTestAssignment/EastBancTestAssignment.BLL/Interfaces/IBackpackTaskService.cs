@@ -8,6 +8,6 @@ namespace EastBancTestAssignment.BLL.Interfaces
     public interface IBackpackTaskService
     {
         Task<BackpackTaskDto> NewBackpackTask(List<ItemDto> itemDtos, string taskName, int backpackWeightLimit);
-        Task StartBackpackTask(BackpackTaskDto backpackTaskDto);
+        Task StartBackpackTask(string taskId);
     }
 }
