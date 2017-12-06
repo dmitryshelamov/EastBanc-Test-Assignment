@@ -12,17 +12,17 @@ namespace EastBancTestAssignment.Web
 
             _service.OnUpdatProgressEventHandler += (sender, args) =>
             {
-                Clients.Caller.ReportProgress(args.Id, args.Percent);
+                Clients.All.ReportProgress(args.Id, args.Percent);
             };
 
             _service.OnTaskCompleteEventHandler += (sender, args) =>
             {
-                Clients.Caller.ReportComplete(args.Id, args.WeightLimit, args.BestItemPrice, args.Percent, args.Status);
+                Clients.All.ReportComplete(args.Id, args.WeightLimit, args.BestItemPrice, args.Percent, args.Status);
             };
 
             _service.OnTaskPrepareEventHandler += (sender, args) =>
             {
-                Clients.Caller.ReportProgress(args.Id, args.Message + " " + args.Percent);
+                Clients.All.ReportProgress(args.Id, args.Message + " " + args.Percent);
             };
         }
     }

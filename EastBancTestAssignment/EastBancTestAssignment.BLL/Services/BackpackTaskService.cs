@@ -81,16 +81,6 @@ namespace EastBancTestAssignment.BLL.Services
                 GenerateCombination(backpackTask.BackpackItems, backpackTask.ItemCombinationSets, progressPrepareService);
             }
             //  get all calculated ItemCombinationSet
-//            else
-//            {
-//                foreach (var itemCombinationSet in backpackTask.ItemCombinationSets)
-//                {
-//                    if (itemCombinationSet.IsCalculated)
-//                    {
-//                        progressTaskService.UpdateProgress();
-//                    }
-//                }
-//            }
             await unitOfWork.CompleteAsync();
 
 
@@ -226,7 +216,7 @@ namespace EastBancTestAssignment.BLL.Services
                         Percent = service.Percent,
                         Message = "Preparing... "
                     });
-                    Thread.Sleep(300);
+                    Thread.Sleep(50);
                 }
             }
         }
