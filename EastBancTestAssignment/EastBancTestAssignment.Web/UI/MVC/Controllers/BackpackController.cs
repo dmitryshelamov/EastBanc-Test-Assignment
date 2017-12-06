@@ -36,13 +36,13 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     PercentComplete = GetPercent(backpackTask),
                     Status = backpackTask.Complete.ToString()
                 });
-                if (_service.InPtogressBackpackTaskIds.Contains(backpackTask.Id) == false)
-                {
-
-                    Debug.WriteLine($"Add task to List {backpackTask.Id}");
-                    _service.InPtogressBackpackTaskIds.Add(backpackTask.Id);
-                    Task.Run(() => _service.StartBackpackTask(backpackTask));
-                }
+//                if (_service.InPtogressBackpackTaskIds.Contains(backpackTask.Id) == false)
+//                {
+//
+//                    Debug.WriteLine($"Add task to List {backpackTask.Id}");
+//                    _service.InPtogressBackpackTaskIds.Add(backpackTask.Id);
+//                    Task.Run(() => _service.StartBackpackTask(backpackTask));
+//                }
             }
 
             return View(list);
@@ -69,8 +69,8 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
 //
 //
-                    new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
-                    new ItemViewModel { Name = "Item 7", Price = 700, Weight = 3},
+//                    new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
+//                    new ItemViewModel { Name = "Item 7", Price = 700, Weight = 3},
                     new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
 //                    new ItemViewModel { Name = "Item 9", Price = 900, Weight = 2},
 //                    new ItemViewModel { Name = "Item 10", Price = 100, Weight = 4},
@@ -92,7 +92,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                 Price = itemDto.Price,
                 Weight = itemDto.Weight
             }).ToList();
-            var bt = await _service.CreateNewBackpackTask(itemDtos, vm.Name, vm.BackpackWeightLimit);
+            var bt = await _service.NewBackpackTask(itemDtos, vm.Name, vm.BackpackWeightLimit);
             Task.Run(() => _service.StartBackpackTask(bt));
 //            await _service.StartBackpackTask(bt);
             return RedirectToAction("Index");
@@ -143,7 +143,14 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 
         private int GetPercent(BackpackTaskDto backpackTask)
         {
-            int percentComplete = (int)Math.Round((double)(100 * backpackTask.CombinationCalculated) / backpackTask.ItemCombinationDtos.Count);
+            if (backpackTask.Complete == true)
+                return 100;
+            else
+            {
+
+            }
+
+            int percentComplete = (int)Math.Round((double)(100 * backpackTask.CurrentProgress) / backpackTask.TotalAmoutOfWork);
             if (percentComplete < 0)
                 percentComplete = 0;
             if (percentComplete > 100)

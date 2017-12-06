@@ -40,12 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\Converter.cs" />
     <Compile Include="DTOs\BackpackTaskDto.cs" />
     <Compile Include="DTOs\ItemCombinationDto.cs" />
     <Compile Include="DTOs\ItemDto.cs" />
     <Compile Include="Interfaces\IBackpackTaskService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BackpackTaskService.cs" />
+    <Compile Include="Services\ProgressService.cs" />
     <Compile Include="Services\TaskCompleteEventArgs.cs" />
     <Compile Include="TaskProgressEventArgs.cs" />
   </ItemGroup>

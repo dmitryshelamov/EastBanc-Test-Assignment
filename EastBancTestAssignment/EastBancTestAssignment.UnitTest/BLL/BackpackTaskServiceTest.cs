@@ -32,7 +32,7 @@ namespace EastBancTestAssignment.UnitTest.BLL
             var weightLimit = 8;
             BackpackTaskService service = BackpackTaskService.GetInstance();
             //  act
-            var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
+            var backpackTask = await service.NewBackpackTask(_itemDtos, taskName, weightLimit);
             //  assert
             Assert.NotNull(backpackTask);
             Assert.AreEqual(taskName, backpackTask.Name);
@@ -48,12 +48,12 @@ namespace EastBancTestAssignment.UnitTest.BLL
             var taskName = "TaskName";
             var weightLimit = 8;
             BackpackTaskService service = BackpackTaskService.GetInstance();
-            var backpackTask = await service.CreateNewBackpackTask(_itemDtos, taskName, weightLimit);
+            var backpackTask = await service.NewBackpackTask(_itemDtos, taskName, weightLimit);
             //  act
             await service.StartBackpackTask(backpackTask);
             //  assert
             //  assert
-            Assert.AreEqual(31, backpackTask.CombinationCalculated);
+            Assert.AreEqual(31, backpackTask.CurrentProgress);
             Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
             Assert.AreEqual(8, backpackTask.BestItemSetWeight);
             Assert.AreEqual(3, backpackTask.BestItemDtosSet.Count);

@@ -12,7 +12,6 @@ namespace EastBancTestAssignment.Core.Models
         public DateTime? EndTime { get; set; }
         public int BestItemSetPrice { get; set; }
         public int BestItemSetWeight { get; set; }
-        public int CombinationCalculated { get; set; }
         public bool Complete { get; set; }
 
         public List<Item> BackpackItems { get; set; }
