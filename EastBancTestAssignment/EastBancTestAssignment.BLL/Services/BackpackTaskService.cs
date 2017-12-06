@@ -69,7 +69,13 @@ namespace EastBancTestAssignment.BLL.Services
         public async Task StartBackpackTask(BackpackTaskDto backpackTaskDto)
         {
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            var percentage = 0;
             BackpackTask backpackTask = await unitOfWork.BackpackTaskRepository.Get(backpackTaskDto.Id);
+            if (InPtogressBackpackTaskIds.Contains(backpackTask.Id))
+            {
+                return;
+            }
+            InPtogressBackpackTaskIds.Add(backpackTask.Id);
             //  set start time
             backpackTask.StartTime = DateTime.Now;
             //  first we need to generate all possible unique sets of items
@@ -92,13 +98,14 @@ namespace EastBancTestAssignment.BLL.Services
                 }
             }
 
+            await unitOfWork.CompleteAsync();
 
-            CalculateBestItemSet(backpackTask, unitOfWork);
+            await CalculateBestItemSet(backpackTask);
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
             backpackTask.Complete = true;
-
             await unitOfWork.CompleteAsync();
+
             Debug.WriteLine($"Remove task from List {backpackTaskDto.Id}");
             InPtogressBackpackTaskIds.Remove(backpackTaskDto.Id);
 
@@ -112,6 +119,70 @@ namespace EastBancTestAssignment.BLL.Services
                     Percent = 100,
                     Status = backpackTask.Complete.ToString()
                 });
+            }
+        }
+
+        private async Task CalculateBestItemSet(BackpackTask backpackTask)
+        {
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            //  iterate over all item combinations
+            foreach (var set in backpackTask.ItemCombinationSets)
+            {
+                if (set.IsCalculated == false)
+                {
+                    //  iterate over all item int current item set
+                    //  calculate total weight and price of current item set
+                    var totalWeight = 0;
+                    var totalPrice = 0;
+                    foreach (var itemCombination in set.ItemCombinations)
+                    {
+                        totalWeight += itemCombination.Item.Weight;
+                        totalPrice += itemCombination.Item.Price;
+                    }
+
+                    //  check if we ok with totalWeight and current price of item set is greater that current best item set price
+                    if (totalWeight <= backpackTask.WeightLimit &&
+                        totalPrice > backpackTask.BestItemSetPrice)
+                    {
+                        //  update current solution
+                        backpackTask.BestItemSetPrice = totalPrice;
+                        backpackTask.BestItemSetWeight = totalWeight;
+                        List<Item> items = new List<Item>();
+                        foreach (var itemCombo in set.ItemCombinations)
+                        {
+                            items.Add(itemCombo.Item);
+                        }
+                        backpackTask.BestItemSet = new List<BackpackBestItemSet>();
+                        foreach (var item in items)
+                        {
+                            backpackTask.BestItemSet.Add(new BackpackBestItemSet { Item = item });
+                        }
+                    }
+
+                    //  mark current set as calucated
+                    set.IsCalculated = true;
+                    //  update calculation counter
+                    backpackTask.CombinationCalculated++;
+
+                    int percentage = (int)Math.Round((double)(100 * backpackTask.CombinationCalculated) /
+                                                     backpackTask.ItemCombinationSets.Count);
+                    if (percentage < 0)
+                        percentage = 0;
+                    if (percentage > 100)
+                        percentage = 100;
+
+                    await unitOfWork.CompleteAsync();
+
+                    Debug.WriteLine($"Percant: {(int)percentage}%");
+                    if (OnUpdatProgressEventHandler != null)
+                    {
+                        OnUpdatProgressEventHandler(this, new TaskProgressEventArgs()
+                        {
+                            Id = backpackTask.Id,
+                            Percent = percentage
+                        });
+                    }
+                }
             }
         }
 
@@ -199,64 +270,7 @@ namespace EastBancTestAssignment.BLL.Services
             }
         }
 
-        private void CalculateBestItemSet(BackpackTask backpackTask, UnitOfWork unitOfWork)
-        {
 
-            //  iterate over all item combinations
-            foreach (var set in backpackTask.ItemCombinationSets)
-            {
-                //  iterate over all item int current item set
-                //  calculate total weight and price of current item set
-                var totalWeight = 0;
-                var totalPrice = 0;
-                foreach (var itemCombination in set.ItemCombinations)
-                {
-                    totalWeight += itemCombination.Item.Weight;
-                    totalPrice += itemCombination.Item.Price;
-                }
-
-                //  check if we ok with totalWeight and current price of item set is greater that current best item set price
-                if (totalWeight <= backpackTask.WeightLimit &&
-                    totalPrice > backpackTask.BestItemSetPrice)
-                {
-                    //  update current solution
-                    backpackTask.BestItemSetPrice = totalPrice;
-                    backpackTask.BestItemSetWeight = totalWeight;
-                    List<Item> items = new List<Item>();
-                    foreach (var itemCombo in set.ItemCombinations)
-                    {
-                        items.Add(itemCombo.Item);
-                    }
-                    backpackTask.BestItemSet = new List<BackpackBestItemSet>();
-                    foreach (var item in items)
-                    {
-                        backpackTask.BestItemSet.Add(new BackpackBestItemSet { Item = item });
-                    }
-                }
-
-                //  mark current set as calucated
-                set.IsCalculated = true;
-                //  update calculation counter
-                backpackTask.CombinationCalculated++;
-
-                int percentage = (int)Math.Round((double)(100 * backpackTask.CombinationCalculated) /
-                                                 backpackTask.ItemCombinationSets.Count);
-                if (percentage < 0)
-                    percentage = 0;
-                if (percentage > 100)
-                    percentage = 100;
-
-                Debug.WriteLine($"Percant: {(int)percentage}%");
-                if (OnUpdatProgressEventHandler != null)
-                {
-                    OnUpdatProgressEventHandler(this, new TaskProgressEventArgs()
-                    {
-                        Id = backpackTask.Id,
-                        Percent = percentage
-                    });
-                }
-            }
-        }
 
         public async Task Delete(string id)
         {

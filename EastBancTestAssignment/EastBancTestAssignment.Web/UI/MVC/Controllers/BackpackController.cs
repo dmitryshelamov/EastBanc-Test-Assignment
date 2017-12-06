@@ -36,7 +36,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     PercentComplete = GetPercent(backpackTask),
                     Status = backpackTask.Complete.ToString()
                 });
-                if (backpackTask.Complete == false && _service.InPtogressBackpackTaskIds.Contains(backpackTask.Id) == false)
+                if (_service.InPtogressBackpackTaskIds.Contains(backpackTask.Id) == false)
                 {
 
                     Debug.WriteLine($"Add task to List {backpackTask.Id}");
@@ -67,11 +67,11 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
                     new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
                     new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
-
-
+//
+//
                     new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
                     new ItemViewModel { Name = "Item 7", Price = 700, Weight = 3},
-//                    new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
+                    new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
 //                    new ItemViewModel { Name = "Item 9", Price = 900, Weight = 2},
 //                    new ItemViewModel { Name = "Item 10", Price = 100, Weight = 4},
 
