@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -21,12 +23,10 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
         // GET: Backpack
         public async Task<ActionResult> Index()
         {
-            var taskDtos = await _service.GetAllBackpackTasks();
+            List<BackpackTaskDto> taskDtos = await _service.GetAllBackpackTasks();
             List<BackpackTaskViewModel> list = new List<BackpackTaskViewModel>();
             foreach (var backpackTask in taskDtos)
             {
-                
-
                 list.Add(new BackpackTaskViewModel
                 {
                     Id = backpackTask.Id,
@@ -34,8 +34,15 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                     BackpackWeightLimit = backpackTask.WeightLimit,
                     BestPrice = backpackTask.BestItemSetPrice,
                     PercentComplete = GetPercent(backpackTask),
-                    Status = GetStatus(backpackTask)
+                    Status = backpackTask.Complete.ToString()
                 });
+                if (backpackTask.Complete == false && _service.InPtogressBackpackTaskIds.Contains(backpackTask.Id) == false)
+                {
+
+                    Debug.WriteLine($"Add task to List {backpackTask.Id}");
+                    _service.InPtogressBackpackTaskIds.Add(backpackTask.Id);
+                    Task.Run(() => _service.StartBackpackTask(backpackTask));
+                }
             }
 
             return View(list);
@@ -64,9 +71,9 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
 
                     new ItemViewModel { Name = "Item 6", Price = 600, Weight = 4},
                     new ItemViewModel { Name = "Item 7", Price = 700, Weight = 3},
-                    new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
-                    new ItemViewModel { Name = "Item 9", Price = 900, Weight = 2},
-                    new ItemViewModel { Name = "Item 10", Price = 100, Weight = 4},
+//                    new ItemViewModel { Name = "Item 8", Price = 800, Weight = 3},
+//                    new ItemViewModel { Name = "Item 9", Price = 900, Weight = 2},
+//                    new ItemViewModel { Name = "Item 10", Price = 100, Weight = 4},
 
 //                    new ItemViewModel { Name = "Lighter", Price = 400, Weight = 1},
 //                    new ItemViewModel { Name = "Tent", Price = 10000, Weight = 2},
@@ -100,7 +107,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             vm.Id = backpackTaskDto.Id;
             vm.Name = backpackTaskDto.Name;
             vm.WeightLimit = backpackTaskDto.WeightLimit;
-            vm.Status = GetStatus(backpackTaskDto);
+            vm.Status = backpackTaskDto.Complete.ToString();
             vm.Items = backpackTaskDto.ItemDtos.Select(item => new ItemViewModel
             {
                 Id = item.Id,
@@ -109,7 +116,7 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
                 Weight = item.Weight
             }).ToList();
 
-            if (vm.Status == Complete)
+            if (backpackTaskDto.Complete)
             {
                 vm.BestItemSetWeight = backpackTaskDto.BestItemSetWeight;
                 vm.BestPrice = backpackTaskDto.BestItemSetPrice;
@@ -134,17 +141,15 @@ namespace EastBancTestAssignment.Web.UI.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        private string GetStatus(BackpackTaskDto backpackTask)
-        {
-            var status = InProgress;
-            if (GetPercent(backpackTask) == 100)
-                status = Complete;
-            return status;
-        }
-
         private int GetPercent(BackpackTaskDto backpackTask)
         {
-            return (int)(backpackTask.CombinationCalculated / backpackTask.ItemCombinationDtos.Count) * 100;
+            int percentComplete = (int)Math.Round((double)(100 * backpackTask.CombinationCalculated) / backpackTask.ItemCombinationDtos.Count);
+            if (percentComplete < 0)
+                percentComplete = 0;
+            if (percentComplete > 100)
+                percentComplete = 100;
+            return percentComplete;
+
         }
 
     }

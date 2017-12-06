@@ -18,8 +18,9 @@ namespace EastBancTestAssignment.BLL.DTOs
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public double NumberOfUniqueItemCombination { get; set; }
-        public double CombinationCalculated { get; set; }
+        public int NumberOfUniqueItemCombination { get; set; }
+        public int CombinationCalculated { get; set; }
+        public bool Complete { get; set; }
 
         public List<ItemCombinationDto> ItemCombinationDtos { get; set; }
 

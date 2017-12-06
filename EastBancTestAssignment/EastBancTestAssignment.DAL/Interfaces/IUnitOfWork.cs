@@ -8,5 +8,6 @@ namespace EastBancTestAssignment.DAL.Interfaces
         IItemRepository ItemRepository { get; }
         IBackpackTaskRepository BackpackTaskRepository { get; }
         Task CompleteAsync();
+        void Complete();
     }
 }

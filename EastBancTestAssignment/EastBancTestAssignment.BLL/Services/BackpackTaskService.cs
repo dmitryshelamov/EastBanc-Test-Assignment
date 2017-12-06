@@ -7,7 +7,6 @@ using EastBancTestAssignment.BLL.DTOs;
 using EastBancTestAssignment.BLL.Interfaces;
 using EastBancTestAssignment.Core.Models;
 using EastBancTestAssignment.DAL;
-using EastBancTestAssignment.DAL.Interfaces;
 
 namespace EastBancTestAssignment.BLL.Services
 {
@@ -17,9 +16,12 @@ namespace EastBancTestAssignment.BLL.Services
         public EventHandler<TaskCompleteEventArgs> OnTaskCompleteEventHandler;
         //        private readonly IUnitOfWork _unitOfWork;
 
+        public List<string> InPtogressBackpackTaskIds { get; set; }
+
         private BackpackTaskService()
         {
-//            _unitOfWork = new UnitOfWork(new AppDbContext());
+            //            _unitOfWork = new UnitOfWork(new AppDbContext());
+            InPtogressBackpackTaskIds = new List<string>();
         }
 
         private static BackpackTaskService _instance;
@@ -90,13 +92,15 @@ namespace EastBancTestAssignment.BLL.Services
                 }
             }
 
-//            await CalculateBestItemSet(backpackTask);
-            await CalculateBestItemSet(backpackTask, unitOfWork);
 
+            CalculateBestItemSet(backpackTask, unitOfWork);
             //  task done, update end time
             backpackTask.EndTime = DateTime.Now;
+            backpackTask.Complete = true;
 
             await unitOfWork.CompleteAsync();
+            Debug.WriteLine($"Remove task from List {backpackTaskDto.Id}");
+            InPtogressBackpackTaskIds.Remove(backpackTaskDto.Id);
 
             if (OnTaskCompleteEventHandler != null)
             {
@@ -106,7 +110,7 @@ namespace EastBancTestAssignment.BLL.Services
                     WeightLimit = backpackTask.WeightLimit,
                     BestItemPrice = backpackTask.BestItemSetPrice,
                     Percent = 100,
-                    Status = "Complete"
+                    Status = backpackTask.Complete.ToString()
                 });
             }
         }
@@ -155,7 +159,7 @@ namespace EastBancTestAssignment.BLL.Services
                 }).ToList(),
                 StartTime = backpackTask.StartTime,
                 EndTime = backpackTask.EndTime,
-                NumberOfUniqueItemCombination = Math.Pow(2, backpackTask.ItemCombinationSets.Count) - 1,
+                NumberOfUniqueItemCombination = (int)Math.Round(Math.Pow(2, backpackTask.ItemCombinationSets.Count) - 1),
                 CombinationCalculated = backpackTask.CombinationCalculated,
                 ItemCombinationDtos = backpackTask.ItemCombinationSets.Select(ic => new ItemCombinationDto
                 {
@@ -168,7 +172,8 @@ namespace EastBancTestAssignment.BLL.Services
                         Price = c.Item.Price,
                         Weight = c.Item.Weight
                     }).ToList()
-                }).ToList()
+                }).ToList(),
+                Complete = backpackTask.Complete
             };
         }
 
@@ -194,8 +199,9 @@ namespace EastBancTestAssignment.BLL.Services
             }
         }
 
-        private async Task CalculateBestItemSet(BackpackTask backpackTask, UnitOfWork unitOfWork)
+        private void CalculateBestItemSet(BackpackTask backpackTask, UnitOfWork unitOfWork)
         {
+
             //  iterate over all item combinations
             foreach (var set in backpackTask.ItemCombinationSets)
             {
@@ -231,18 +237,22 @@ namespace EastBancTestAssignment.BLL.Services
                 //  mark current set as calucated
                 set.IsCalculated = true;
                 //  update calculation counter
-//                await Task.Delay(300);
                 backpackTask.CombinationCalculated++;
 
-                await unitOfWork.CompleteAsync();
-                double percent = ((double)backpackTask.CombinationCalculated / (double)backpackTask.ItemCombinationSets.Count) * 100;
-//                Debug.WriteLine($"Percant: {percent}%");
+                int percentage = (int)Math.Round((double)(100 * backpackTask.CombinationCalculated) /
+                                                 backpackTask.ItemCombinationSets.Count);
+                if (percentage < 0)
+                    percentage = 0;
+                if (percentage > 100)
+                    percentage = 100;
+
+                Debug.WriteLine($"Percant: {(int)percentage}%");
                 if (OnUpdatProgressEventHandler != null)
                 {
                     OnUpdatProgressEventHandler(this, new TaskProgressEventArgs()
                     {
                         Id = backpackTask.Id,
-                        Percent = (int)percent
+                        Percent = percentage
                     });
                 }
             }

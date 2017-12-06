@@ -13,6 +13,7 @@ namespace EastBancTestAssignment.Core.Models
         public int BestItemSetPrice { get; set; }
         public int BestItemSetWeight { get; set; }
         public int CombinationCalculated { get; set; }
+        public bool Complete { get; set; }
 
         public List<Item> BackpackItems { get; set; }
         public List<BackpackBestItemSet> BestItemSet { get; set; }

@@ -23,6 +23,11 @@ namespace EastBancTestAssignment.DAL
             await _context.SaveChangesAsync();
         }
 
+        public void Complete()
+        {
+            _context.SaveChanges();
+        }
+
         public static UnitOfWork UnitOfWorkFactory()
         {
             return new UnitOfWork(new AppDbContext());

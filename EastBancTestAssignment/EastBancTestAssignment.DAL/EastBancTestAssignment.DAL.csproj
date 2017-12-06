@@ -63,6 +63,10 @@
     <Compile Include="Migrations\201712052003040_RemoveBackpackItemsModel.Designer.cs">
       <DependentUpon>201712052003040_RemoveBackpackItemsModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712060008402_AddCompleteProperty.cs" />
+    <Compile Include="Migrations\201712060008402_AddCompleteProperty.Designer.cs">
+      <DependentUpon>201712060008402_AddCompleteProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Repositories\IBackpackTaskRepository.cs" />
@@ -89,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712052003040_RemoveBackpackItemsModel.resx">
       <DependentUpon>201712052003040_RemoveBackpackItemsModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712060008402_AddCompleteProperty.resx">
+      <DependentUpon>201712060008402_AddCompleteProperty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
