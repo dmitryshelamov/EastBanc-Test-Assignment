@@ -5,5 +5,6 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Interfaces.Repositories
     public interface IBackpackTaskRepository
     {
         void Add(BackpackTask backpackTask);
+        BackpackTask Get(string id);
     }
 }

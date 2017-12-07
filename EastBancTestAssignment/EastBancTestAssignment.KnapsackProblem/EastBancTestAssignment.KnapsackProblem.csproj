@@ -103,6 +103,8 @@
     <Compile Include="BLL\Converters\CustomConverter.cs" />
     <Compile Include="BLL\DTOs\ItemDto.cs" />
     <Compile Include="BLL\Services\BackpackTaskService.cs" />
+    <Compile Include="BLL\Services\CalculationService.cs" />
+    <Compile Include="BLL\Services\TaskProgress.cs" />
     <Compile Include="Core\Models\BackpackTask.cs" />
     <Compile Include="Core\Models\BestItemSet.cs" />
     <Compile Include="Core\Models\CombinationSet.cs" />

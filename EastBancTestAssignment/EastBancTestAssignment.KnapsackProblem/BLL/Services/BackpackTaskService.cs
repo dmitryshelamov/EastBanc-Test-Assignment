@@ -33,5 +33,16 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
             return backpackTask.Id;
         }
+
+        public async Task StartBackpackTask(string id)
+        {
+            BackpackTask backpackTask = _unitOfWork.BackpackTaskRepository.Get(id);
+            TaskProgress taskProgress = new TaskProgress(backpackTask);
+            CalculationService calculation = new CalculationService(backpackTask, taskProgress);
+
+            backpackTask.Complete = true;
+            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
