@@ -14,14 +14,14 @@ namespace EastBancTestAssignment.KnapsackProblem.Core.Models
         public int BestItemSetWeight { get; set; }
         public bool Complete { get; set; }
 
-        public List<BackpackItems> BackpackItems { get; set; }
+        public List<Item> BackpackItems { get; set; }
         public List<BestItemSet> BestItemSet { get; set; }
         public List<CombinationSet> CombinationSets { get; set; }
 
         public BackpackTask()
         {
             Id = Guid.NewGuid().ToString();
-            BackpackItems = new List<BackpackItems>();
+            BackpackItems = new List<Item>();
             BestItemSet = new List<BestItemSet>();
             CombinationSets = new List<CombinationSet>();
         }

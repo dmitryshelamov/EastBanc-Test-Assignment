@@ -100,7 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Core\Models\BackpackItems.cs" />
     <Compile Include="Core\Models\BackpackTask.cs" />
     <Compile Include="Core\Models\BestItemSet.cs" />
     <Compile Include="Core\Models\CombinationSet.cs" />
@@ -115,6 +114,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712071843131_InitialModels.cs" />
+    <Compile Include="Migrations\201712071843131_InitialModels.Designer.cs">
+      <DependentUpon>201712071843131_InitialModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712071847025_RemoveBackpackItem.cs" />
+    <Compile Include="Migrations\201712071847025_RemoveBackpackItem.Designer.cs">
+      <DependentUpon>201712071847025_RemoveBackpackItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +139,14 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712071843131_InitialModels.resx">
+      <DependentUpon>201712071843131_InitialModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712071847025_RemoveBackpackItem.resx">
+      <DependentUpon>201712071847025_RemoveBackpackItem.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

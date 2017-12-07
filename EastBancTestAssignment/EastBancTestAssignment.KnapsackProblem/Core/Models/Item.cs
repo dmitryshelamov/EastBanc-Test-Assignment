@@ -12,6 +12,7 @@ namespace EastBancTestAssignment.KnapsackProblem.Core.Models
         public BackpackTask BackpackTask { get; set; }
         public string BackpackTaskId { get; set; }
 
+
         public Item()
         {
             Id = Guid.NewGuid().ToString();

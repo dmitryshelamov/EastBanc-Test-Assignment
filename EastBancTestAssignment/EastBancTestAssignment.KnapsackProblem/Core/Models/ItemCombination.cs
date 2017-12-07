@@ -6,6 +6,6 @@
         public string ItemId { get; set; }
 
         public CombinationSet CombinationSet { get; set; }
-        public string ItemCombinationSetId { get; set; }
+        public string CombinationSetId { get; set; }
     }
 }
