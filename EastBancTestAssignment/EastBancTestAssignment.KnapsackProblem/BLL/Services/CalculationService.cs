@@ -5,17 +5,13 @@ using EastBancTestAssignment.KnapsackProblem.Core.Models;
 
 namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 {
-    public class CalculationService
+    public static class CalculationService
     {
-        public CalculationService(BackpackTask backpackTask, TaskProgress taskProgress)
+
+        public static void StartCalculation(BackpackTask backpackTask, TaskProgress service)
         {
-            GenerateCombination(backpackTask, backpackTask.BackpackItems, backpackTask.CombinationSets, taskProgress);
-        }
-
-
-
-        private void GenerateCombination(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service)
-        {
+            List<Item> set = backpackTask.BackpackItems;
+            List<CombinationSet> result = backpackTask.CombinationSets;
             if (set.Count > 0 && !result.Where(l => l.ItemCombinations.Count == set.Count).Any(l =>
             {
                 List<Item> items = l.ItemCombinations.Select(argItemCombination => argItemCombination.Item).ToList();
@@ -30,7 +26,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             GenerateCombinationRecursive(backpackTask, set, result, service);
         }
 
-        private void GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service)
+        private static void GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service)
         {
             for (int i = 0; i < set.Count; i++)
             {
@@ -50,7 +46,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             }
         }
 
-        private void CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set, TaskProgress service)
+        private static void CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set, TaskProgress service)
         {
             //  iterate over all item combinations
             Debug.WriteLine("CombinationSet Id: " + set.Id);

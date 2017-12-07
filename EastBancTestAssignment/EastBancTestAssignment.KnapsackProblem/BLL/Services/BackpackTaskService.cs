@@ -38,7 +38,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         {
             BackpackTask backpackTask = _unitOfWork.BackpackTaskRepository.Get(id);
             TaskProgress taskProgress = new TaskProgress(backpackTask);
-            CalculationService calculation = new CalculationService(backpackTask, taskProgress);
+            CalculationService.StartCalculation(backpackTask, taskProgress);
 
             backpackTask.Complete = true;
             _unitOfWork.BackpackTaskRepository.Add(backpackTask);

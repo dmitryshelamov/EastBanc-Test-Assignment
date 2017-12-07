@@ -74,7 +74,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             await service.StartBackpackTask(backpackTaskId);
             //  assert
             //  assert
-            Assert.AreEqual(_itemDtos.Count, backpackTask.CombinationSets.Count);
+            Assert.AreEqual(31, backpackTask.CombinationSets.Count);
 //            Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
             Assert.AreEqual(weightLimit, backpackTask.BestItemSetWeight);
             Assert.AreEqual(3, backpackTask.BestItemSet.Count);
