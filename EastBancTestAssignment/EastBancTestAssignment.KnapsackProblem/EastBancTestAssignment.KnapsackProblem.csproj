@@ -109,6 +109,9 @@
     <Compile Include="DAL\Interfaces\IAppDbContext.cs" />
     <Compile Include="DAL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="DAL\Interfaces\Repositories\IBackpackTaskRepository.cs" />
+    <Compile Include="DAL\Repositories\AppDbContext.cs" />
+    <Compile Include="DAL\Repositories\BackpackTaskRepository.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -127,7 +130,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="DAL\Repositories\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
