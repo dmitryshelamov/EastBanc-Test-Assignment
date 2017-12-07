@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using EastBancTestAssignment.KnapsackProblem.App_Start;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.BLL.Services;
 using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
@@ -17,6 +19,12 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
         private List<ItemDto> _itemDtos;
         private List<Item> _items;
         private IUnitOfWork _unitOfWork;
+
+        [OneTimeSetUp]
+        public void GloablTestInitialize()
+        {
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
+        }
 
         [SetUp]
         public void TestInitialize()
