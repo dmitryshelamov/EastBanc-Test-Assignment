@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EastBancTestAssignment.KnapsackProblem.Core.Models
+namespace EastBancTestAssignment.KnapsackProblem.DAL.Models
 {
     public class Item
     {

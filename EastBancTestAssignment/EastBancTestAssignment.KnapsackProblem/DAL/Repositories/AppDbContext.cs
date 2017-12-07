@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
-using EastBancTestAssignment.KnapsackProblem.Core.Models;
 using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
+using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 
 namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
 {

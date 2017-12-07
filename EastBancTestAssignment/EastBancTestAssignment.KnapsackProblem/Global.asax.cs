@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using EastBancTestAssignment.KnapsackProblem.UI.MVC;
 
 namespace EastBancTestAssignment.KnapsackProblem
 {
@@ -11,6 +12,9 @@ namespace EastBancTestAssignment.KnapsackProblem
     {
         protected void Application_Start()
         {
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new CustomViewEngine());
+
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

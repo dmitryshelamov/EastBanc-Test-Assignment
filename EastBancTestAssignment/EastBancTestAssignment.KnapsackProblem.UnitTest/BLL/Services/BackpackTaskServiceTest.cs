@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.BLL.Services;
-using EastBancTestAssignment.KnapsackProblem.Core.Models;
 using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
+using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 using NSubstitute;
 using NUnit.Framework;
 

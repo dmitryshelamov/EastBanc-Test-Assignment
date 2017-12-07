@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EastBancTestAssignment.KnapsackProblem.Core.Models
+namespace EastBancTestAssignment.KnapsackProblem.DAL.Models
 {
     public class CombinationSet
     {

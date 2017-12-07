@@ -1,4 +1,4 @@
-﻿using EastBancTestAssignment.KnapsackProblem.Core.Models;
+﻿using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 
 namespace EastBancTestAssignment.KnapsackProblem.DAL.Interfaces.Repositories
 {
