@@ -1,0 +1,102 @@
+﻿@using System.Web.Optimization
+@model EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels.BackpackTaskFormViewModel
+
+<h1>New Task</h1>
+
+@using (Html.BeginForm("NewBackpackTask", "Backpack", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.BackpackWeightLimit)
+                @Html.TextBoxFor(m => m.BackpackWeightLimit, new { @class = "form-control" })
+            </div>
+
+        </div>
+    </div>
+
+    <hr />
+
+    <div>
+        <table id="table-item" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Weight</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr class="template">
+                    <th class="row-number"></th>
+                    <th class="item-name">
+                        <input type="text" value="" class="form-control name-input" />
+                    </th>
+                    <th class="item-price">
+                        <input type="text" value="" class="form-control price-input" />
+                    </th>
+                    <th class="item-weight">
+                        <input type="text" value="" class="form-control weight-input" />
+                    </th>
+                    <th class="item-delete">
+                        <div class="text-center">
+                            <button class="btn btn-danger">Delete</button>
+                        </div>
+                    </th>
+                </tr>
+
+                @for (var i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+                    <tr class="data-row">
+                        <th class="row-number">@i</th>
+                        <th class="item-name">
+                            <input type="text" name="Items[@(i)].Name" value="@item.Name" class="form-control" />
+                        </th>
+                        <th class="item-price">
+                            <input type="text" name="Items[@(i)].Price" value="@item.Price" class="form-control" />
+                        </th>
+                        <th class="item-weight">
+                            <input type="text" name="Items[@(i)].Weight" value="@item.Weight" class="form-control" />
+                        </th>
+
+                        <th class="item-delete">
+                            <div class="text-center">
+                                <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
+                            </div>
+                        </th>
+
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-primary" id="button-add-row">Add</button>
+
+    </div>
+
+    <div class="container">
+        <div class="col-md-offset-5">
+            <button type="submit" class="btn btn-success">Create</button>
+            <a href="@Url.Action("Index", "Backpack")" class="btn btn btn-default">Cancel</a>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/newtask");
+}

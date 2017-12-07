@@ -6,3 +6,10 @@
 .vertical-space {
     margin-bottom: 100px
 }
+
+tbody .template {
+    visibility: hidden;
+    display: none;
+    padding: 0;
+    margin: 0;
+}
