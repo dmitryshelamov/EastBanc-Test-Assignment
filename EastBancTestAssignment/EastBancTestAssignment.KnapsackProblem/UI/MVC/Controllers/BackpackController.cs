@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
 {
@@ -7,7 +9,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         // GET: Backpack
         public ActionResult Index()
         {
-            return View();
+            return View(new List<BackpackTaskViewModel>());
         }
     }
 }
