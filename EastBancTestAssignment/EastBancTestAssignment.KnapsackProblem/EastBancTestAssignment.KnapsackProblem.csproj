@@ -114,15 +114,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712071843131_InitialModels.cs" />
-    <Compile Include="Migrations\201712071843131_InitialModels.Designer.cs">
+    <Compile Include="DAL\Migrations\201712071843131_InitialModels.cs" />
+    <Compile Include="DAL\Migrations\201712071843131_InitialModels.Designer.cs">
       <DependentUpon>201712071843131_InitialModels.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712071847025_RemoveBackpackItem.cs" />
-    <Compile Include="Migrations\201712071847025_RemoveBackpackItem.Designer.cs">
+    <Compile Include="DAL\Migrations\201712071847025_RemoveBackpackItem.cs" />
+    <Compile Include="DAL\Migrations\201712071847025_RemoveBackpackItem.Designer.cs">
       <DependentUpon>201712071847025_RemoveBackpackItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="DAL\Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -141,10 +141,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712071843131_InitialModels.resx">
+    <EmbeddedResource Include="DAL\Migrations\201712071843131_InitialModels.resx">
       <DependentUpon>201712071843131_InitialModels.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712071847025_RemoveBackpackItem.resx">
+    <EmbeddedResource Include="DAL\Migrations\201712071847025_RemoveBackpackItem.resx">
       <DependentUpon>201712071847025_RemoveBackpackItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

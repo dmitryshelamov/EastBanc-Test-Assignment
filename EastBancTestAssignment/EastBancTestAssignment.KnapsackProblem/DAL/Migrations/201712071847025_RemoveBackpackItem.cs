@@ -1,8 +1,7 @@
-namespace EastBancTestAssignment.KnapsackProblem.Migrations
+using System.Data.Entity.Migrations;
+
+namespace EastBancTestAssignment.KnapsackProblem.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class RemoveBackpackItem : DbMigration
     {
         public override void Up()
