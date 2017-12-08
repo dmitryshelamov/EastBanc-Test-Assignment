@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 using EastBancTestAssignment.KnapsackProblem.UI.Hubs;
 using Microsoft.AspNet.SignalR;
@@ -19,7 +20,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         {
             _backpackTask = backpackTask;
             BackpackTaskId = backpackTask.Id;
-            _totalAmountOfWork = (int)Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
+            _totalAmountOfWork = (int) Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
             _currentProgress = backpackTask.CombinationSets.Count;
 //            foreach (var combinationSet in backpackTask.CombinationSets)
 //            {
@@ -33,11 +34,23 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         public void UpdateProgress()
         {
             _currentProgress++;
-            Progress = (int)Math.Round((double)(100 * _currentProgress) / _totalAmountOfWork);
+            Progress = (int) Math.Round((double) (100 * _currentProgress) / _totalAmountOfWork);
+            OnProgressUpdate();
+            if (Progress == 100)
+                OnTaskComplete();
+        }
+
+        public void OnProgressUpdate()
+        {
             var hub = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
             hub.Clients.All.ReportProgress(BackpackTaskId, Progress);
-            Debug.WriteLine($"Id: {BackpackTaskId}, {Progress}");
-            Debug.WriteLine($"Combination set done: {_backpackTask.CombinationSets.Count}, of {_totalAmountOfWork}");
+        }
+
+        public void OnTaskComplete()
+        {
+            var hub = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
+            hub.Clients.All.ReportComplete(BackpackTaskId, _backpackTask.BestItemSet.Sum(i => i.Item.Price),
+                Progress, "Complete");
         }
     }
 }
