@@ -10,5 +10,6 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Interfaces.Repositories
         BackpackTask Get(string id);
         Task<List<BackpackTask>> GetAllAsync();
         List<string> GetInProgressTaskIds();
+        void Remove(BackpackTask backpackTask);
     }
 }

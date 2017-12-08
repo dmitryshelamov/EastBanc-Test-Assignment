@@ -60,5 +60,11 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
             BackpackTaskDetailViewModel vm = Mapper.Map<BackpackTaskDto, BackpackTaskDetailViewModel>(backpackTaskDto);
             return View(vm);
         }
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _service.DelelteBackpackTask(id);
+            return RedirectToAction("Index");
+        }
     }
 }

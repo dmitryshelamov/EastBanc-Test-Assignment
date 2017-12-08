@@ -74,5 +74,13 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             return Mapper.Map<BackpackTask, BackpackTaskDto>(backpackTask);
         }
+
+        public async Task DelelteBackpackTask(string id)
+        {
+            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
+            unitOfWork.BackpackTaskRepository.Remove(backpackTask);
+            await unitOfWork.CompleteAsync();
+        }
     }
 }

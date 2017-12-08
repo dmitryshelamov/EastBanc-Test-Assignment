@@ -44,5 +44,10 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
         {
             return _context.BackpackTasks.Where(t => t.Complete == false).Select(s => s.Id).ToList();
         }
+
+        public void Remove(BackpackTask backpackTask)
+        {
+            _context.BackpackTasks.Remove(backpackTask);
+        }
     }
 }
