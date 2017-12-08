@@ -9,10 +9,11 @@
             .find("tbody").find('#' + id).find("#percantage").text(progress + "%");
     };
 
-    hub.client.reportComplete = function (id, bestItemPrice, percantage, status) {
+    hub.client.reportComplete = function (id, name, bestItemPrice, percantage, status) {
         var $tr = $table
             .find("tbody").find('#' + id);
 
+        $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
         $tr.find("#price").text(bestItemPrice);
         $tr.find("#percantage").text(percantage + "%");
         $tr.find("#staus").text(status);

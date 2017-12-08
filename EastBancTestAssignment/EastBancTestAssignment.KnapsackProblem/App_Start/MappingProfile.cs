@@ -37,7 +37,7 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
                 .ForMember(dest => dest.BestItemSet, opt => opt.ResolveUsing(src => src.BestItemSet));
 
             CreateMap<BackpackTaskDto, BackpackTaskViewModel>()
-                .ForMember(des => des.Status, opt => opt.ResolveUsing(src =>
+                .ForMember(des => des.StatusMessage, opt => opt.ResolveUsing(src =>
                 {
                     if (src.Complete)
                         return "Complete";

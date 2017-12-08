@@ -12,7 +12,6 @@
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th>Task Id</th>
             <th>Task Name</th>
             <th>Backpack Weight Limit</th>
             <th>Best Item Price</th>
@@ -26,13 +25,21 @@
         {
             foreach (var task in Model)
             {
-                <tr onclick="location.href = '@(Url.Action("Details", "Backpack", new { Id = task.Id }))'" id="@task.Id">
-                    <th>@task.Id</th>
-                    <th>@task.Name</th>
+                <tr id="@task.Id">
+                    <th id="name">
+                        @if (task.Complete)
+                        {
+                            <a href="@Url.Action("Details", "Backpack", new {id = task.Id})">@task.Name</a>
+                        }
+                        else
+                        {
+                            <span>@task.Name</span>
+                        }
+                    </th>
                     <th id="weight">@task.WeightLimit</th>
                     <th id="price">@task.BestPrice</th>
                     <th id="percantage">@task.PercentComplete%</th>
-                    <th id="staus">@task.Status</th>
+                    <th id="staus">@task.StatusMessage</th>
                     <th>
                         <div class="text-center">
                             <a href="@Url.Action("Delete", "Backpack", new {id = task.Id})" class="btn btn-danger">Delete</a>

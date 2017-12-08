@@ -7,6 +7,7 @@
         public int WeightLimit { get; set; }
         public int? BestPrice { get; set; }
         public int PercentComplete { get; set; }
-        public string Status { get; set; }
+        public bool Complete { get; set; }
+        public string StatusMessage { get; set; }
     }
 }
