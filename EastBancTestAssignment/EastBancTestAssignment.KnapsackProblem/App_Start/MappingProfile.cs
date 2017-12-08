@@ -45,7 +45,7 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
                 }))
                 .ForMember(des => des.BestPrice, opt => opt.ResolveUsing(src =>
                 {
-                    return src.BestItemSet.Sum(i => i.Price);
+                    return src.Complete ? src.BestItemSet.Sum(i => i.Price) : default(int?);
                 }));
 
             CreateMap<BackpackTaskDto, BackpackTaskDetailViewModel>()
