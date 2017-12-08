@@ -38,11 +38,17 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         {
             BackpackTask backpackTask = _unitOfWork.BackpackTaskRepository.Get(id);
             TaskProgress taskProgress = new TaskProgress(backpackTask);
-            CalculationService.StartCalculation(backpackTask, taskProgress);
+            CalculationService.StartCalculation(backpackTask, taskProgress, _unitOfWork);
 
             backpackTask.Complete = true;
-            _unitOfWork.BackpackTaskRepository.Add(backpackTask);
             await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<List<BackpackTaskDto>> GetAllBackpackTasksAsync()
+        {
+            List<BackpackTask> tasks = await _unitOfWork.BackpackTaskRepository.GetAllAsync();
+            List<BackpackTaskDto> list = Mapper.Map<List<BackpackTask>, List<BackpackTaskDto>>(tasks);
+            return list;
         }
     }
 }

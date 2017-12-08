@@ -20,5 +20,10 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL
         {
             await _context.SaveChangesAsync();
         }
+
+        public void Complete()
+        {
+            _context.SaveChanges();
+        }
     }
 }

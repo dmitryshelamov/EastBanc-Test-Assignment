@@ -7,5 +7,6 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Interfaces
     {
         IBackpackTaskRepository BackpackTaskRepository { get; }
         Task CompleteAsync();
+        void Complete();
     }
 }

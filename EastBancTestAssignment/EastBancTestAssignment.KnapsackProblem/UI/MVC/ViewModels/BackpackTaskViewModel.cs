@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public int BackpackWeightLimit { get; set; }
         public int BestPrice { get; set; }
-        public string PercentComplete { get; set; }
+        public int PercentComplete { get; set; }
         public string Status { get; set; }
     }
 }
