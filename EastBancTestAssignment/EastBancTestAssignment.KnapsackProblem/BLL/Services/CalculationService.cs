@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 
@@ -9,7 +11,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
     public static class CalculationService
     {
 
-        public static void StartCalculation(BackpackTask backpackTask, TaskProgress service, IUnitOfWork unitOfWork)
+        public static async Task StartCalculation(BackpackTask backpackTask, TaskProgress service, IUnitOfWork unitOfWork)
         {
             List<Item> set = backpackTask.BackpackItems;
             List<CombinationSet> result = backpackTask.CombinationSets;
@@ -21,13 +23,13 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             {
                 CombinationSet combinationSet = new CombinationSet { ItemCombinations = set.Select(item => new ItemCombination { Item = item }).ToList() };
                 result.Add(combinationSet);
-                CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
+                await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
             }
 
-            GenerateCombinationRecursive(backpackTask, set, result, service, unitOfWork);
+            await GenerateCombinationRecursive(backpackTask, set, result, service, unitOfWork);
         }
 
-        private static void GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, IUnitOfWork unitOfWork)
+        private static async Task GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, IUnitOfWork unitOfWork)
         {
             for (int i = 0; i < set.Count; i++)
             {
@@ -41,16 +43,15 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 {
                     CombinationSet combinationSet = new CombinationSet { ItemCombinations = temp.Select(item => new ItemCombination { Item = item }).ToList() };
                     result.Add(combinationSet);
-                    CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
-                    GenerateCombinationRecursive(backpackTask, temp, result, service, unitOfWork);
+                    await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
+                    await GenerateCombinationRecursive(backpackTask, temp, result, service, unitOfWork);
                 }
             }
         }
 
-        private static void CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set, TaskProgress service, IUnitOfWork unitOfWork)
+        private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set, TaskProgress service, IUnitOfWork unitOfWork)
         {
             //  iterate over all item combinations
-            Debug.WriteLine("CombinationSet Id: " + set.Id);
             //  iterate over all item int current item set
             //  calculate total weight and price of current item set
             var totalWeight = 0;
@@ -80,9 +81,11 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 }
             }
             //  mark current set as calucated
-            set.IsCalculated = true;
-            unitOfWork.Complete();
+//            set.IsCalculated = true;
+           await unitOfWork.CompleteAsync();
             service.UpdateProgress();
+
+            Thread.Sleep(1000);
         }
     }
 }

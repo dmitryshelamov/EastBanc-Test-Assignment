@@ -10,6 +10,7 @@ using EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
 {
+    [OutputCache(NoStore = true, Duration = 0)]
     public class BackpackController : Controller
     {
         private BackpackTaskService _service;
@@ -49,8 +50,15 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         {
             var list = Mapper.Map<List<ItemViewModel>, List<ItemDto>>(vm.Items);
             string taskId = await _service.NewBackpackTask(list, vm.Name, vm.BackpackWeightLimit);
-            await Task.Run(() => _service.StartBackpackTask(taskId));
+            Task.Run(() => _service.StartBackpackTask(taskId));
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(string id)
+        {
+            BackpackTaskDto backpackTaskDto = _service.GetBackpackTask(id);
+            BackpackTaskDetailViewModel vm = Mapper.Map<BackpackTaskDto, BackpackTaskDetailViewModel>(backpackTaskDto);
+            return View(vm);
         }
     }
 }

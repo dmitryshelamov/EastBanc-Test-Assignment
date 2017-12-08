@@ -27,7 +27,7 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
             return _context.BackpackTasks
                 .Include(b => b.BackpackItems)
                 .Include(b => b.BestItemSet)
-                .Include(b => b.CombinationSets)
+                .Include(b => b.CombinationSets.Select(y => y.ItemCombinations))
                 .SingleOrDefault(bt => bt.Id == id);
         }
 
@@ -36,8 +36,13 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
             return await _context.BackpackTasks
                 .Include(b => b.BackpackItems)
                 .Include(b => b.BestItemSet)
-                .Include(b => b.CombinationSets)
+                .Include(b => b.CombinationSets.Select(y => y.ItemCombinations))
                 .ToListAsync();
+        }
+
+        public List<string> GetInProgressTaskIds()
+        {
+            return _context.BackpackTasks.Where(t => t.Complete == false).Select(s => s.Id).ToList();
         }
     }
 }

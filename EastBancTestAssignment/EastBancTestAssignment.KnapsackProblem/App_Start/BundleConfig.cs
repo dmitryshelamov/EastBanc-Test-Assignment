@@ -12,6 +12,10 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/UI/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
+                "~/UI/Scripts/jquery.signalR-{version}.js",
+                "~/UI/Scripts/Custom/SignalRClient.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/newtask").Include(
                 "~/UI/Scripts/Custom/AddNewRow.js"));
 
