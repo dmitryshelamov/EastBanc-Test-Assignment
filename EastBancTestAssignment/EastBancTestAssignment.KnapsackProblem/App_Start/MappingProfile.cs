@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
+using EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.KnapsackProblem.App_Start
 {
@@ -9,15 +10,10 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
         public MappingProfile()
         {
             CreateMap<ItemDto, Item>()
-                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(des => des.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(des => des.Weight, opt => opt.MapFrom(src => src.Weight));
+                .ForMember(des => des.Id, opt => opt.Ignore());
+            CreateMap<Item, ItemDto>();
 
-            CreateMap<Item, ItemDto>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(des => des.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(des => des.Weight, opt => opt.MapFrom(src => src.Weight));
+            CreateMap<ItemViewModel, ItemDto>();
         }
     }
 }
