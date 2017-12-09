@@ -1,10 +1,10 @@
 ﻿@model EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels.BackpackTaskDetailViewModel
 
-<div class="container">
+<div class="">
     <h2>Task: @Model.Name</h2>
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-info ">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Details</div>
                 <div class="panel-body">
@@ -12,36 +12,36 @@
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.WeightLimit)
-                            @Html.LabelFor(m => m.WeightLimit, Model.WeightLimit.ToString(), new { @class = "form-control", @readonly = "true" })
+                            @Html.LabelFor(m => m.WeightLimit, Model.WeightLimit.ToString(), new { @class = "form-control" })
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.Status)
-                            @Html.LabelFor(m => m.Status, Model.Status.ToString(), new { @class = "form-control", @readonly = "true" })
+                            @Html.LabelFor(m => m.Status, Model.Status, new { @class = "form-control" })
                         </div>
 
                         <hr />
 
                         <table class="table table-bordered table-hover">
                             <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Weight</th>
-                                </tr>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Weight</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @if (Model.Items.Count > 0)
+                            @if (Model.Items.Count > 0)
+                            {
+                                foreach (var task in Model.Items)
                                 {
-                                    foreach (var task in Model.Items)
-                                    {
-                                        <tr>
-                                            <th>@task.Name</th>
-                                            <th>@task.Price</th>
-                                            <th>@task.Weight</th>
-                                        </tr>
-                                    }
+                                    <tr>
+                                        <th>@task.Name</th>
+                                        <th>@task.Price</th>
+                                        <th>@task.Weight</th>
+                                    </tr>
                                 }
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -50,43 +50,44 @@
         </div>
 
         <div class="col-md-offset-6">
-            <div class="panel panel-default">
+            <div class="panel panel-success">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Solution</div>
                 <div class="panel-body">
                     <div>
                         <div class="form-group">
                             @Html.LabelFor(m => m.BestPrice)
-                            @Html.LabelFor(m => m.BestPrice, Model.BestPrice.ToString(), new { @class = "form-control", @readonly = "true" })
+                            @Html.LabelFor(m => m.BestPrice, Model.BestPrice.ToString(), new { @class = "form-control" })
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.CalculationTime)
-                            @Html.LabelFor(m => m.CalculationTime, Model.CalculationTime.ToString(), new { @class = "form-control", @readonly = "true" })
+                            @Html.LabelFor(m => m.CalculationTime, Model.CalculationTime.ToString(), new { @class = "form-control" })
                         </div>
 
                         <hr />
 
                         <table class="table table-bordered table-hover">
                             <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Weight</th>
-                                </tr>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Weight</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @if (Model.BestItemSet != null && Model.BestItemSet.Count > 0)
+                            @if (Model.BestItemSet != null && Model.BestItemSet.Count > 0)
+                            {
+                                foreach (var task in Model.BestItemSet)
                                 {
-                                    foreach (var task in Model.BestItemSet)
-                                    {
-                                        <tr>
-                                            <th>@task.Name</th>
-                                            <th>@task.Price</th>
-                                            <th>@task.Weight</th>
-                                        </tr>
-                                    }
+                                    <tr>
+                                        <th>@task.Name</th>
+                                        <th>@task.Price</th>
+                                        <th>@task.Weight</th>
+                                    </tr>
+                                        
                                 }
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -95,3 +96,25 @@
         </div>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // Select and loop the container element of the elements you want to equalise
+            $('.container').each(function () {  
+                // Cache the highest
+                var highestBox = 0;
+                // Select and loop the elements you want to equalise
+                $('.panel-body', this).each(function () {
+                    // If this box is higher than the cached highest then store it
+                    if($(this).height() > highestBox) {
+                        highestBox = $(this).height(); 
+                    }
+                });
+                // Set the height of all those children to whichever was highest 
+                $('.panel-body',this).height(highestBox);
+            });
+        });
+    </script>
+}
