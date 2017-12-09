@@ -54,7 +54,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
-            BackpackTaskService service = new BackpackTaskService(_unitOfWork);
+            BackpackTaskService service = new BackpackTaskService();
             BackpackTask backpackTask = null;
             _unitOfWork.BackpackTaskRepository.Add(Arg.Do<BackpackTask>(bc => backpackTask = bc));
             //  act
@@ -73,7 +73,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             //  arrange
             var taskName = "TaskName";
             var weightLimit = 8;
-            BackpackTaskService service = new BackpackTaskService(_unitOfWork);
+            BackpackTaskService service = new BackpackTaskService();
             BackpackTask backpackTask = null;
             _unitOfWork.BackpackTaskRepository.Add(Arg.Do<BackpackTask>(bc => backpackTask = bc));
             string backpackTaskId = await service.NewBackpackTask(_itemDtos, taskName, weightLimit);
@@ -116,7 +116,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
 
 
 
-            BackpackTaskService service = new BackpackTaskService(_unitOfWork);
+            BackpackTaskService service = new BackpackTaskService();
             _unitOfWork.BackpackTaskRepository.Add(Arg.Do<BackpackTask>(bc => backpackTask = bc));
             //  act
             _unitOfWork.BackpackTaskRepository.Get(Arg.Any<string>()).Returns(backpackTask);
