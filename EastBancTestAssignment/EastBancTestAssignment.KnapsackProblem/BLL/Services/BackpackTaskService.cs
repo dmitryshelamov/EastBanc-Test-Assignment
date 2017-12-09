@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
@@ -10,7 +11,17 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 {
     public class BackpackTaskService
     {
+        public static Dictionary<string, CancellationTokenSource> CancellationTokens;
 
+        static BackpackTaskService()
+        {
+            CancellationTokens = new Dictionary<string, CancellationTokenSource>();
+        }
+
+        public BackpackTaskService()
+        {
+            
+        }
         public async Task<string> NewBackpackTask(List<ItemDto> itemDtos, string taskName,
             int backpackWeightLimit)
         {
@@ -29,16 +40,21 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             return backpackTask.Id;
         }
 
-        public async Task StartBackpackTask(string id)
+        public async Task StartBackpackTask(string id, CancellationToken token)
         {
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             BackpackTask backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             TaskProgress taskProgress = new TaskProgress(backpackTask);
-            await CalculationService.StartCalculation(backpackTask, taskProgress, unitOfWork);
+            await CalculationService.StartCalculation(backpackTask, taskProgress, unitOfWork, token);
 
+            if (token.IsCancellationRequested)
+            {
+                await unitOfWork.CompleteAsync();
+                return;
+            }
             backpackTask.EndTime = DateTime.Now;
             backpackTask.Complete = true;
-            await unitOfWork.CompleteAsync();
+            CancellationTokens.Remove(id);
         }
 
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasksAsync()
@@ -51,11 +67,15 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
         public void ContinueInProgressBackpackTasks()
         {
+
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var listIds = unitOfWork.BackpackTaskRepository.GetInProgressTaskIds();
             foreach (var id in listIds)
             {
-                Task.Run(() => StartBackpackTask(id));
+                CancellationTokenSource cancellation = new CancellationTokenSource();
+                CancellationToken token = cancellation.Token;
+                CancellationTokens.Add(id, cancellation);
+                Task.Run(() => StartBackpackTask(id, token));
             }
         }
 
@@ -70,6 +90,9 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         {
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
+            //  get cancellation token
+            CancellationTokenSource cancellationToken = CancellationTokens[backpackTask.Id];
+            cancellationToken.Cancel();
             unitOfWork.BackpackTaskRepository.Remove(backpackTask);
             await unitOfWork.CompleteAsync();
         }

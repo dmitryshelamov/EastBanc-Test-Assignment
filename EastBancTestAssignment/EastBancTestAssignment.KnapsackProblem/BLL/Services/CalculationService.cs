@@ -11,7 +11,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
     public static class CalculationService
     {
 
-        public static async Task StartCalculation(BackpackTask backpackTask, TaskProgress service, IUnitOfWork unitOfWork)
+        public static async Task StartCalculation(BackpackTask backpackTask, TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
         {
             List<Item> set = backpackTask.BackpackItems;
             List<CombinationSet> result = backpackTask.CombinationSets;
@@ -23,16 +23,20 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             {
                 CombinationSet combinationSet = new CombinationSet { ItemCombinations = set.Select(item => new ItemCombination { Item = item }).ToList() };
                 result.Add(combinationSet);
-                await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
+                await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork, token);
             }
 
-            await GenerateCombinationRecursive(backpackTask, set, result, service, unitOfWork);
+            await GenerateCombinationRecursive(backpackTask, set, result, service, unitOfWork, token);
         }
 
-        private static async Task GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, IUnitOfWork unitOfWork)
+        private static async Task GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
         {
             for (int i = 0; i < set.Count; i++)
             {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
                 List<Item> temp = new List<Item>(set.Where((s, index) => index != i));
 
                 if (temp.Count > 0 && !result.Where(l => l.ItemCombinations.Count == temp.Count).Any(l =>
@@ -43,15 +47,16 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 {
                     CombinationSet combinationSet = new CombinationSet { ItemCombinations = temp.Select(item => new ItemCombination { Item = item }).ToList() };
                     result.Add(combinationSet);
-                    await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork);
-                    await GenerateCombinationRecursive(backpackTask, temp, result, service, unitOfWork);
+                    await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork, token);
+                    await GenerateCombinationRecursive(backpackTask, temp, result, service, unitOfWork, token);
                 }
             }
         }
 
         private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set,
-            TaskProgress service, IUnitOfWork unitOfWork)
+            TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
         {
+
             //  iterate over all item combinations
             //  iterate over all item int current item set
             //  calculate total weight and price of current item set
@@ -85,6 +90,8 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 //            set.IsCalculated = true;
             await unitOfWork.CompleteAsync();
             service.UpdateProgress();
+            Debug.WriteLine("Calculations");
+            Thread.Sleep(500);
         }
     }
 }

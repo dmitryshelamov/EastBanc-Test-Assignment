@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.App_Start;
@@ -79,7 +80,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             string backpackTaskId = await service.NewBackpackTask(_itemDtos, taskName, weightLimit);
             //  act
             _unitOfWork.BackpackTaskRepository.Get(Arg.Any<string>()).Returns(backpackTask);
-            await service.StartBackpackTask(backpackTaskId);
+            await service.StartBackpackTask(backpackTaskId, CancellationToken.None);
             //  assert
             //  assert
             Assert.AreEqual(31, backpackTask.CombinationSets.Count);
@@ -120,7 +121,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             _unitOfWork.BackpackTaskRepository.Add(Arg.Do<BackpackTask>(bc => backpackTask = bc));
             //  act
             _unitOfWork.BackpackTaskRepository.Get(Arg.Any<string>()).Returns(backpackTask);
-            await service.StartBackpackTask("id");
+            await service.StartBackpackTask("id", CancellationToken.None);
             //  assert
             //  assert
             Assert.AreEqual(31, backpackTask.CombinationSets.Count);

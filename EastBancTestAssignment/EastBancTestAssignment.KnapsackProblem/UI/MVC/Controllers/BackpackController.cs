@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -48,7 +49,17 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         {
             var list = Mapper.Map<List<ItemViewModel>, List<ItemDto>>(vm.Items);
             string taskId = await _service.NewBackpackTask(list, vm.Name, vm.BackpackWeightLimit);
-            Task.Run(() => _service.StartBackpackTask(taskId));
+
+            CancellationTokenSource cancellation = new CancellationTokenSource();
+            CancellationToken token = cancellation.Token;
+            BackpackTaskService.CancellationTokens.Add(taskId, cancellation);
+
+            Task.Run(() => _service.StartBackpackTask(taskId, token));
+//            Task.Run(async () =>
+//            {
+//                await Task.Delay(3000);
+//                cancellation.Cancel();
+//            });
             return RedirectToAction("Index");
         }
 
