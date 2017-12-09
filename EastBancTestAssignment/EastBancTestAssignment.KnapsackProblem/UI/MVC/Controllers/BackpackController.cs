@@ -55,11 +55,6 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
             BackpackTaskService.CancellationTokens.Add(taskId, cancellation);
 
             Task.Run(() => _service.StartBackpackTask(taskId, token));
-//            Task.Run(async () =>
-//            {
-//                await Task.Delay(3000);
-//                cancellation.Cancel();
-//            });
             return RedirectToAction("Index");
         }
 

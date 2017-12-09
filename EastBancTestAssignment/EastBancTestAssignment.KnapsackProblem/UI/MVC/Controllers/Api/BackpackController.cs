@@ -13,7 +13,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers.Api
             _service = new BackpackTaskService();
         }
 
-        // DELETE: api/Backpack/5
+        // DELETE: api/Backpack/id
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(string id)
         {

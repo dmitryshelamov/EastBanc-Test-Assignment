@@ -22,6 +22,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         {
             
         }
+
         public async Task<string> NewBackpackTask(List<ItemDto> itemDtos, string taskName,
             int backpackWeightLimit)
         {
@@ -49,7 +50,6 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
             if (token.IsCancellationRequested)
             {
-                await unitOfWork.CompleteAsync();
                 return;
             }
             backpackTask.EndTime = DateTime.Now;
