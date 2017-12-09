@@ -19,6 +19,9 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
             bundles.Add(new ScriptBundle("~/bundles/newtask").Include(
                 "~/UI/Scripts/Custom/AddNewRow.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/removerow").Include(
+                "~/UI/Scripts/Custom/DeleteRow.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/UI/Content/css/bootstrap.css",
                 "~/UI/Content/css/site.css"));
