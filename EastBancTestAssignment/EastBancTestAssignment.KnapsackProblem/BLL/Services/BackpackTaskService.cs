@@ -55,6 +55,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             backpackTask.EndTime = DateTime.Now;
             backpackTask.Complete = true;
             CancellationTokens.Remove(id);
+            await unitOfWork.CompleteAsync();
         }
 
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasksAsync()
@@ -91,8 +92,11 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             //  get cancellation token
-            CancellationTokenSource cancellationToken = CancellationTokens[backpackTask.Id];
-            cancellationToken.Cancel();
+            if (backpackTask.Complete == false)
+            {
+                CancellationTokenSource cancellationToken = CancellationTokens[backpackTask.Id];
+                cancellationToken.Cancel();
+            }
             unitOfWork.BackpackTaskRepository.Remove(backpackTask);
             await unitOfWork.CompleteAsync();
         }
