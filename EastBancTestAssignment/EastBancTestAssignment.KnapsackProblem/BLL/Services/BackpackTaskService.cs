@@ -4,21 +4,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.DAL;
-using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
-using EastBancTestAssignment.KnapsackProblem.DAL.Repositories;
 
 namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 {
     public class BackpackTaskService
     {
-//        private readonly IUnitOfWork _unitOfWork;
-
-        public BackpackTaskService(IUnitOfWork unitOfWork)
-        {
-//            _unitOfWork = unitOfWork;
-//            ContinueInProgressBackpackTasks();
-        }
 
         public async Task<string> NewBackpackTask(List<ItemDto> itemDtos, string taskName,
             int backpackWeightLimit)
@@ -31,7 +22,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 StartTime = DateTime.Now
             };
 
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             unitOfWork.BackpackTaskRepository.Add(backpackTask);
             await unitOfWork.CompleteAsync();
 
@@ -40,7 +31,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
         public async Task StartBackpackTask(string id)
         {
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             BackpackTask backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             TaskProgress taskProgress = new TaskProgress(backpackTask);
             await CalculationService.StartCalculation(backpackTask, taskProgress, unitOfWork);
@@ -52,7 +43,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasksAsync()
         {
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             List<BackpackTask> tasks = await unitOfWork.BackpackTaskRepository.GetAllAsync();
             List<BackpackTaskDto> list = Mapper.Map<List<BackpackTask>, List<BackpackTaskDto>>(tasks);
             return list;
@@ -60,7 +51,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
         public void ContinueInProgressBackpackTasks()
         {
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var listIds = unitOfWork.BackpackTaskRepository.GetInProgressTaskIds();
             foreach (var id in listIds)
             {
@@ -70,14 +61,14 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 
         public BackpackTaskDto GetBackpackTask(string id)
         {
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             return Mapper.Map<BackpackTask, BackpackTaskDto>(backpackTask);
         }
 
         public async Task DelelteBackpackTask(string id)
         {
-            var unitOfWork = new UnitOfWork(new AppDbContext());
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
             var backpackTask = unitOfWork.BackpackTaskRepository.Get(id);
             unitOfWork.BackpackTaskRepository.Remove(backpackTask);
             await unitOfWork.CompleteAsync();

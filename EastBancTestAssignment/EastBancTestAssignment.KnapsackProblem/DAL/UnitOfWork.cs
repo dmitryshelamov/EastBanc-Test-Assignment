@@ -25,5 +25,10 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL
         {
             _context.SaveChanges();
         }
+
+        public static UnitOfWork UnitOfWorkFactory()
+        {
+            return new UnitOfWork(new AppDbContext());
+        }
     }
 }

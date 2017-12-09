@@ -85,8 +85,6 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
 //            set.IsCalculated = true;
             await unitOfWork.CompleteAsync();
             service.UpdateProgress();
-
-            Thread.Sleep(500);
         }
     }
 }

@@ -4,8 +4,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.BLL.Services;
-using EastBancTestAssignment.KnapsackProblem.DAL;
-using EastBancTestAssignment.KnapsackProblem.DAL.Repositories;
 using EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels;
 
 namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
@@ -17,7 +15,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
 
         public BackpackController()
         {
-            _service = new BackpackTaskService(new UnitOfWork(new AppDbContext()));
+            _service = new BackpackTaskService();
         }
         // GET: Backpack
         public async Task<ActionResult> Index()
