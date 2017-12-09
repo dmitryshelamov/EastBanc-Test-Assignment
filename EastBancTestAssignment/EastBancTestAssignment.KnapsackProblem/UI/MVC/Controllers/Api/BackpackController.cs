@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using EastBancTestAssignment.KnapsackProblem.BLL.Services;
-using EastBancTestAssignment.KnapsackProblem.DAL;
-using EastBancTestAssignment.KnapsackProblem.DAL.Repositories;
 
 namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers.Api
 {
@@ -12,7 +10,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers.Api
 
         public BackpackController()
         {
-            _service = new BackpackTaskService(new UnitOfWork(new AppDbContext()));
+            _service = new BackpackTaskService();
         }
 
         // DELETE: api/Backpack/5
