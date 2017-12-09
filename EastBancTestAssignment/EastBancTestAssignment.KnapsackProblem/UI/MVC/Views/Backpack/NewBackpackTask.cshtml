@@ -1,6 +1,8 @@
 ﻿@using System.Web.Optimization
 @model EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels.BackpackTaskFormViewModel
 
+<a href="@Url.Action("Index", "Backpack")" class="btn bg-primary">Back To List</a>
+
 <h1>New Task</h1>
 
 @using (Html.BeginForm("NewBackpackTask", "Backpack", FormMethod.Post))

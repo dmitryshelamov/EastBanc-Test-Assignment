@@ -1,6 +1,7 @@
 ﻿@model EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels.BackpackTaskDetailViewModel
 
 <div class="">
+    <a href="@Url.Action("Index", "Backpack")" class="btn bg-primary">Back To List</a>
     <h2>Task: @Model.Name</h2>
     <div class="row">
         <div class="col-md-6">
@@ -12,15 +13,15 @@
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.WeightLimit)
-                            @Html.LabelFor(m => m.WeightLimit, Model.WeightLimit.ToString(), new { @class = "form-control" })
+                            @Html.LabelFor(m => m.WeightLimit, Model.WeightLimit.ToString(), new {@class = "form-control"})
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.Status)
-                            @Html.LabelFor(m => m.Status, Model.Status, new { @class = "form-control" })
+                            @Html.LabelFor(m => m.Status, Model.Status, new {@class = "form-control"})
                         </div>
 
-                        <hr />
+                        <hr/>
 
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -57,15 +58,15 @@
                     <div>
                         <div class="form-group">
                             @Html.LabelFor(m => m.BestPrice)
-                            @Html.LabelFor(m => m.BestPrice, Model.BestPrice.ToString(), new { @class = "form-control" })
+                            @Html.LabelFor(m => m.BestPrice, Model.BestPrice.ToString(), new {@class = "form-control"})
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.CalculationTime)
-                            @Html.LabelFor(m => m.CalculationTime, Model.CalculationTime.ToString(), new { @class = "form-control" })
+                            @Html.LabelFor(m => m.CalculationTime, Model.CalculationTime.ToString(), new {@class = "form-control"})
                         </div>
 
-                        <hr />
+                        <hr/>
 
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -85,7 +86,7 @@
                                         <th>@task.Price</th>
                                         <th>@task.Weight</th>
                                     </tr>
-                                        
+
                                 }
                             }
                             </tbody>

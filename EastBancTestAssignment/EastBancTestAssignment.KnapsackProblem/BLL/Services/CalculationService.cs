@@ -49,7 +49,8 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             }
         }
 
-        private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set, TaskProgress service, IUnitOfWork unitOfWork)
+        private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set,
+            TaskProgress service, IUnitOfWork unitOfWork)
         {
             //  iterate over all item combinations
             //  iterate over all item int current item set
@@ -82,10 +83,10 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             }
             //  mark current set as calucated
 //            set.IsCalculated = true;
-           await unitOfWork.CompleteAsync();
+            await unitOfWork.CompleteAsync();
             service.UpdateProgress();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
     }
 }
