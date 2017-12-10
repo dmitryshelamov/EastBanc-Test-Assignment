@@ -186,6 +186,10 @@
     <Compile Include="BLL\Services\BackpackTaskService.cs" />
     <Compile Include="BLL\Services\CalculationService.cs" />
     <Compile Include="BLL\Services\TaskProgress.cs" />
+    <Compile Include="DAL\Migrations\201712100911058_RemoveIsCalculatedFromCombinationSet.cs" />
+    <Compile Include="DAL\Migrations\201712100911058_RemoveIsCalculatedFromCombinationSet.Designer.cs">
+      <DependentUpon>201712100911058_RemoveIsCalculatedFromCombinationSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="DAL\Models\BackpackTask.cs" />
     <Compile Include="DAL\Models\BestItemSet.cs" />
     <Compile Include="DAL\Models\CombinationSet.cs" />
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DAL\Migrations\201712071847025_RemoveBackpackItem.resx">
       <DependentUpon>201712071847025_RemoveBackpackItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DAL\Migrations\201712100911058_RemoveIsCalculatedFromCombinationSet.resx">
+      <DependentUpon>201712100911058_RemoveIsCalculatedFromCombinationSet.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

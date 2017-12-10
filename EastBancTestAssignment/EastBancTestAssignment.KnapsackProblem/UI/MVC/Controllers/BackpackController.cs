@@ -39,6 +39,12 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
                     new ItemViewModel {Name = "First Aid Kit", Price = 1500, Weight = 4},
                     new ItemViewModel {Name = "Laptop", Price = 40000, Weight = 2},
                     new ItemViewModel {Name = "Bowler", Price = 500, Weight = 1},
+
+                    new ItemViewModel { Name = "Item 1", Price = 100, Weight = 1},
+                    new ItemViewModel { Name = "Item 2", Price = 200, Weight = 1},
+                    new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
+                    new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
+                    new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
                 }
             };
             return View(viewModel);

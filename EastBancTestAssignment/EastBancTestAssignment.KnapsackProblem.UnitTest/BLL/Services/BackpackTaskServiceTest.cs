@@ -87,7 +87,6 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
 //            Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
             Assert.AreEqual(weightLimit, backpackTask.BestItemSetWeight);
             Assert.AreEqual(3, backpackTask.BestItemSet.Count);
-            Assert.IsTrue(backpackTask.CombinationSets.All(s => s.IsCalculated));
             Assert.IsTrue(backpackTask.Complete);
         }
 
@@ -110,7 +109,6 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
                 new CombinationSet()
                 {
                     Id = "AlreadyExist1",
-                    IsCalculated = true,
                     ItemCombinations = itemCombinations
                 },
             };
@@ -128,7 +126,6 @@ namespace EastBancTestAssignment.KnapsackProblem.UnitTest.BLL.Services
             Assert.AreEqual(46500, backpackTask.BestItemSetPrice);
             Assert.AreEqual(8, backpackTask.BestItemSetWeight);
             Assert.AreEqual(3, backpackTask.BestItemSet.Count);
-            Assert.IsTrue(backpackTask.CombinationSets.All(s => s.IsCalculated));
         }
     }
 }
