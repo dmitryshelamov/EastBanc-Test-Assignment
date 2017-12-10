@@ -3,6 +3,7 @@
         var tr = $(e.target).parents("tr");
 
         tr.find("#staus").text("Deleting");
+        tr.find("#delete-button").find("button").attr("disabled", true);
 
         $.ajax({
                 url: "/api/backpack/" + tr.attr("id"),
