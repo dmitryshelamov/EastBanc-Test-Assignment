@@ -21,7 +21,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         // GET: Backpack
         public async Task<ActionResult> Index()
         {
-            List<BackpackTaskDto> taskDtos = await _service.GetAllBackpackTasksAsync();
+            List<BackpackTaskDto> taskDtos = await _service.GetAllBackpackTaskWithRelatedObjectsAsync();
             List<BackpackTaskViewModel> list = Mapper.Map<List<BackpackTaskDto>, List<BackpackTaskViewModel>>(taskDtos);
             return View(list);
         }

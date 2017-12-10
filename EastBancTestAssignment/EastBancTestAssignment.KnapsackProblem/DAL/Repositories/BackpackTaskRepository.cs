@@ -31,13 +31,18 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
                 .SingleOrDefault(bt => bt.Id == id);
         }
 
-        public async Task<List<BackpackTask>> GetAllAsync()
+        public async Task<List<BackpackTask>> GetAllEagerLoadindAsync()
         {
             return await _context.BackpackTasks
                 .Include(b => b.BackpackItems)
                 .Include(b => b.BestItemSet)
                 .Include(b => b.CombinationSets.Select(y => y.ItemCombinations))
                 .ToListAsync();
+        }
+
+        public async Task<List<BackpackTask>> GetAllAsync()
+        {
+            return await _context.BackpackTasks.ToListAsync();
         }
 
         public List<string> GetInProgressTaskIds()

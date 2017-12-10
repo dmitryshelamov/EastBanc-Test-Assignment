@@ -58,6 +58,14 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             await unitOfWork.CompleteAsync();
         }
 
+        public async Task<List<BackpackTaskDto>> GetAllBackpackTaskWithRelatedObjectsAsync()
+        {
+            var unitOfWork = UnitOfWork.UnitOfWorkFactory();
+            List<BackpackTask> tasks = await unitOfWork.BackpackTaskRepository.GetAllEagerLoadindAsync();
+            List<BackpackTaskDto> list = Mapper.Map<List<BackpackTask>, List<BackpackTaskDto>>(tasks);
+            return list;
+        }
+
         public async Task<List<BackpackTaskDto>> GetAllBackpackTasksAsync()
         {
             var unitOfWork = UnitOfWork.UnitOfWorkFactory();
