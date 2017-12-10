@@ -44,7 +44,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         public void OnTaskComplete()
         {
             var hub = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
-            hub.Clients.All.ReportComplete(BackpackTaskId, _backpackTask.Name, _backpackTask.BestItemSet.Sum(i => i.Item.Price),
+            hub.Clients.All.ReportComplete(BackpackTaskId, _backpackTask.Name, _backpackTask.BestItemSetPrice,
                 Progress, "Complete");
         }
     }

@@ -10,19 +10,32 @@
     };
 
     hub.client.reportComplete = function (id, name, bestItemPrice, percantage, status) {
-        var $tr = $table
-            .find("tbody").find('#' + id);
+        updateProgress(id, name, bestItemPrice, percantage, status);
+    };
 
-        $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
-        $tr.find("#price").text(bestItemPrice);
-        $tr.find("#percantage").text(percantage + "%");
-        $tr.find("#staus").text(status);
+    hub.client.ReportProgressExtended = function(progressList) {
+        for (var i = 0; i < progressList.length; ++i) {
+            updateProgress(progressList[i].Id,
+                progressList[i].Name,
+                progressList[i].BestItemSetPrice,
+                progressList[i].Progress,
+                progressList[i].Status);
+        };
     };
 
     // Start the connection.
     $.connection.hub.start().done(function () {
-
+        hub.server.requestUpdate();
     });
+
+    function updateProgress(id, name, bestItemPrice, percantage, status) {
+        var $tr = $table
+            .find("tbody").find('#' + id);
+        $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
+        $tr.find("#price").text(bestItemPrice);
+        $tr.find("#percantage").text(percantage + "%");
+        $tr.find("#staus").text(status);
+    }
 });
 
 

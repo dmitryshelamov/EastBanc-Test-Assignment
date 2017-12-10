@@ -215,6 +215,7 @@
     <Compile Include="DAL\Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Hubs\ProgressHub.cs" />
+    <Compile Include="UI\Hubs\ProgressHubDto.cs" />
     <Compile Include="UI\MVC\Controllers\Api\BackpackController.cs" />
     <Compile Include="UI\MVC\Controllers\BackpackController.cs" />
     <Compile Include="UI\MVC\CustomViewEngine.cs" />
