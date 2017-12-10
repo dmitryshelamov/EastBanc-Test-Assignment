@@ -22,20 +22,15 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             BackpackTaskId = backpackTask.Id;
             _totalAmountOfWork = (int) Math.Round(Math.Pow(2, backpackTask.BackpackItems.Count) - 1);
             _currentProgress = backpackTask.CombinationSets.Count;
-//            foreach (var combinationSet in backpackTask.CombinationSets)
-//            {
-//                if (combinationSet.IsCalculated)
-//                {
-//                    _currentProgress++;
-//                }
-//            }
         }
 
         public void UpdateProgress()
         {
             _currentProgress++;
+            int oldProgress = Progress;
             Progress = (int) Math.Round((double) (100 * _currentProgress) / _totalAmountOfWork);
-            OnProgressUpdate();
+            if (Progress > oldProgress)
+                OnProgressUpdate();
             if (Progress == 100)
                 OnTaskComplete();
         }

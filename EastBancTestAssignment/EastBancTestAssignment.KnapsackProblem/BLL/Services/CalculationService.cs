@@ -56,9 +56,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
         private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set,
             TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
         {
-
             //  iterate over all item combinations
-            //  iterate over all item int current item set
             //  calculate total weight and price of current item set
             var totalWeight = 0;
             var totalPrice = 0;
@@ -87,11 +85,8 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 }
             }
             //  mark current set as calucated
-//            set.IsCalculated = true;
             await unitOfWork.CompleteAsync();
             service.UpdateProgress();
-            Debug.WriteLine("Calculations");
-            Thread.Sleep(500);
         }
     }
 }
