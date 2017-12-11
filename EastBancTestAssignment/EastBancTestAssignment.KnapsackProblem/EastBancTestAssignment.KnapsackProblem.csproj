@@ -141,6 +141,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="UI\Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="UI\Scripts\jquery.validate.js" />
+    <Content Include="UI\Scripts\jquery.validate.min.js" />
+    <Content Include="UI\Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="UI\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="UI\Scripts\Custom\DeleteRow.js" />
     <Content Include="UI\Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="UI\Scripts\jquery.signalR-2.2.2.min.js" />

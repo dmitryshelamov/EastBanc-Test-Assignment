@@ -9,79 +9,82 @@
 {
     <div class="row">
         <div class="col-md-4">
-
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
                 @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.Name, "", new {@class = "text-danger"})
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(m => m.BackpackWeightLimit)
-                @Html.TextBoxFor(m => m.BackpackWeightLimit, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.BackpackWeightLimit, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.BackpackWeightLimit, "", new {@class = "text-danger"})
             </div>
 
         </div>
     </div>
 
-    <hr />
+    <hr/>
 
     <div>
         <table id="table-item" class="table table-bordered table-hover">
             <thead>
-                <tr>
-                    <th>Number</th>
-                    <th>Item Name</th>
-                    <th>Price</th>
-                    <th>Weight</th>
-                    <th>Delete</th>
-                </tr>
+            <tr>
+                <th>Number</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th>Delete</th>
+            </tr>
             </thead>
             <tbody>
 
-                <tr class="template">
-                    <th class="row-number"></th>
+            <tr class="template">
+                <th class="row-number"></th>
+                <th class="item-name">
+                    <input type="text" value="" class="form-control name-input"/>
+                </th>
+                <th class="item-price">
+                    <input type="text" value="" class="form-control price-input"/>
+                </th>
+                <th class="item-weight">
+                    <input type="text" value="" class="form-control weight-input"/>
+                </th>
+                <th class="item-delete">
+                    <div class="text-center">
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                </th>
+            </tr>
+
+            @Html.ValidationMessageFor(m => m.Items, "", new {@class = "text-danger"})
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                <tr class="data-row">
+                    <th class="row-number">@i</th>
                     <th class="item-name">
-                        <input type="text" value="" class="form-control name-input" />
+                        <input type="text" name="Items[@(i)].Name" value="@item.Name" class="form-control"/>
                     </th>
                     <th class="item-price">
-                        <input type="text" value="" class="form-control price-input" />
+                        <input type="text" name="Items[@(i)].Price" value="@item.Price" class="form-control"/>
                     </th>
                     <th class="item-weight">
-                        <input type="text" value="" class="form-control weight-input" />
+                        <input type="text" name="Items[@(i)].Weight" value="@item.Weight" class="form-control"/>
                     </th>
+
                     <th class="item-delete">
                         <div class="text-center">
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
                         </div>
                     </th>
+
+
+
                 </tr>
-
-                @for (var i = 0; i < Model.Items.Count; i++)
-                {
-                    var item = Model.Items[i];
-                    <tr class="data-row">
-                        <th class="row-number">@i</th>
-                        <th class="item-name">
-                            <input type="text" name="Items[@(i)].Name" value="@item.Name" class="form-control" />
-                        </th>
-                        <th class="item-price">
-                            <input type="text" name="Items[@(i)].Price" value="@item.Price" class="form-control" />
-                        </th>
-                        <th class="item-weight">
-                            <input type="text" name="Items[@(i)].Weight" value="@item.Weight" class="form-control" />
-                        </th>
-
-                        <th class="item-delete">
-                            <div class="text-center">
-                                <button class="btn btn-danger" id="row-number-@(i)">Delete</button>
-                            </div>
-                        </th>
-
-
-
-                    </tr>
-                }
+            }
 
             </tbody>
         </table>
@@ -101,4 +104,5 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/newtask");
+    @Scripts.Render("~/bundles/jqueryval");
 }

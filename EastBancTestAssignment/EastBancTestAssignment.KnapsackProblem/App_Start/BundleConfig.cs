@@ -9,6 +9,9 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/UI/Scripts/jquery-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                "~/UI/Scripts/jquery.validate*"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/UI/Scripts/bootstrap.js"));
 

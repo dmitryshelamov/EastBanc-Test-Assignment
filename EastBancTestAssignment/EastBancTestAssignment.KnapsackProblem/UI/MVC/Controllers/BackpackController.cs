@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -39,11 +38,15 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> NewBackpackTask(BackpackTaskFormViewModel vm)
         {
-            var list = Mapper.Map<List<ItemViewModel>, List<ItemDto>>(vm.Items);
-            string taskId = await _service.NewBackpackTask(list, vm.Name, vm.BackpackWeightLimit);
-            HostingEnvironment.QueueBackgroundWorkItem(ct => _service.StartBackpackTask(taskId, ct));
+            if (ModelState.IsValid)
+            {
+                var list = Mapper.Map<List<ItemViewModel>, List<ItemDto>>(vm.Items);
+                string taskId = await _service.NewBackpackTask(list, vm.Name, (int)vm.BackpackWeightLimit);
+                HostingEnvironment.QueueBackgroundWorkItem(ct => _service.StartBackpackTask(taskId, ct));
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(vm);
         }
 
         public ActionResult Details(string id)
