@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     var $tableItem = $("#table-item");
     var $buttomAddRow = $("#button-add-row");
+    var itemIndex = 0;
 
     $buttomAddRow.on("click",
         function () {
@@ -13,11 +14,13 @@
                 .removeClass("template")
                 .addClass("data-row")
                 .find(".row-number").text(newIndex).end()
-                .find(".name-input").attr("name", "Items[" + newIndex + "].Name").end()
-                .find(".price-input").attr("name", "Items[" + newIndex + "].Price").end()
-                .find(".weight-input").attr("name", "Items[" + newIndex + "].Weight").end()
+                .find(".name-input").attr("name", "Items[" + newIndex + "].Name").attr("value", "Item" + itemIndex).end()
+                .find(".price-input").attr("name", "Items[" + newIndex + "].Price").attr("value", 0).end()
+                .find(".weight-input").attr("name", "Items[" + newIndex + "].Weight").attr("value", 0).end()
                 .find(".item-delete > .text-center button").attr("id", "row-number-" + newIndex).end()
                 .appendTo($tableItem.find("tbody"));
+
+            itemIndex++;
         });
 });
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels.Validation;
 
 namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels
 {
@@ -14,6 +15,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels
         [DisplayName("Backpack Weight Limit")]
         public int? BackpackWeightLimit { get; set; }
 
+        [EnsureOneElement(ErrorMessage = "At least one item is required")]
         public List<ItemViewModel> Items { get; set; }
 
         public BackpackTaskFormViewModel()

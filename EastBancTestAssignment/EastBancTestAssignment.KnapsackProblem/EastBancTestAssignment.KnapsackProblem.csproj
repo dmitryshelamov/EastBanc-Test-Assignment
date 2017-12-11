@@ -230,6 +230,7 @@
     <Compile Include="UI\MVC\ViewModels\BackpackTaskFormViewModel.cs" />
     <Compile Include="UI\MVC\ViewModels\BackpackTaskViewModel.cs" />
     <Compile Include="UI\MVC\ViewModels\ItemViewModel.cs" />
+    <Compile Include="UI\MVC\ViewModels\Validation\EnsureOneElementAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\MVC\Views\web.config" />
