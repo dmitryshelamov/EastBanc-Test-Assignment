@@ -31,7 +31,9 @@
     function updateProgress(id, name, bestItemPrice, percantage, status) {
         var $tr = $table
             .find("tbody").find('#' + id);
-        $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
+        if (status === "Complete") {
+            $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
+        }
         $tr.find("#price").text(bestItemPrice);
         $tr.find("#percantage").text(percantage + "%");
         $tr.find("#staus").text(status);

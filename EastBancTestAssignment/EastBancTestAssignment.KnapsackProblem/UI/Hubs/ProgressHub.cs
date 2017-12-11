@@ -18,12 +18,13 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.Hubs
             {
                 string status = backpackTaskDto.Complete ? "Complete" : "In Progress";
                 int? bestItemPrice = backpackTaskDto.Complete ? backpackTaskDto.BestItemSetPrice : default(int?);
+                var percent = backpackTaskDto.PercentComplete < 0 ? 0 : backpackTaskDto.PercentComplete;
                 progressList.Add(new ProgressHubDto
                 {
                     Id = backpackTaskDto.Id,
                     Name = backpackTaskDto.Name,
                     BestItemSetPrice = bestItemPrice,
-                    Progress = backpackTaskDto.PercentComplete,
+                    Progress = percent,
                     Status = status
                 });
             }
