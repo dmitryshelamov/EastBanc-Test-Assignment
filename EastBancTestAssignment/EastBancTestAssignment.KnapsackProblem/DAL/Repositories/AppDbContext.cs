@@ -7,6 +7,7 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Repositories
     public class AppDbContext : DbContext, IAppDbContext
     {
         public IDbSet<BackpackTask> BackpackTasks { get; set; }
+        public DbSet<CombinationSet> CombinationSets { get; set; }
 
         public AppDbContext() : base("DefaultConnection") { }
 

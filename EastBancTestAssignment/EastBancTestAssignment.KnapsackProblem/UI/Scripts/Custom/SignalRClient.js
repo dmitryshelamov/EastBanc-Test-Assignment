@@ -15,25 +15,31 @@
 
     hub.client.ReportProgressExtended = function(progressList) {
         for (var i = 0; i < progressList.length; ++i) {
-            updateProgress(progressList[i].Id,
-                progressList[i].Name,
-                progressList[i].BestItemSetPrice,
-                progressList[i].Progress,
-                progressList[i].Status);
+            if (progressList[i].Name === "Complete") {
+                updateProgress(progressList[i].Id,
+                    progressList[i].Name,
+                    progressList[i].BestItemSetPrice,
+                    progressList[i].Progress,
+                    progressList[i].Status);
+            };
         };
     };
 
+    setTimeout(
+        function () {
+            hub.server.requestUpdate();
+        }, 2000);
+
     // Start the connection.
     $.connection.hub.start().done(function () {
-        hub.server.requestUpdate();
+//        hub.server.requestUpdate();
     });
 
     function updateProgress(id, name, bestItemPrice, percantage, status) {
         var $tr = $table
             .find("tbody").find('#' + id);
-        if (status === "Complete") {
-            $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
-        }
+
+        $tr.find("#name").find("span").replaceWith('<a href="Backpack/Details/' + id + '">' + name + '</a>');
         $tr.find("#price").text(bestItemPrice);
         $tr.find("#percantage").text(percantage + "%");
         $tr.find("#staus").text(status);

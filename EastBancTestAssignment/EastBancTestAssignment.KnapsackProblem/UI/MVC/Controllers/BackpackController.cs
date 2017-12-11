@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
@@ -30,22 +31,7 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         {
             var viewModel = new BackpackTaskFormViewModel
             {
-                Name = "Task Name",
-                BackpackWeightLimit = 8,
-                Items = new List<ItemViewModel>
-                {
-                    new ItemViewModel {Name = "Book", Price = 600, Weight = 1},
-                    new ItemViewModel {Name = "Binoculars", Price = 5000, Weight = 2},
-                    new ItemViewModel {Name = "First Aid Kit", Price = 1500, Weight = 4},
-                    new ItemViewModel {Name = "Laptop", Price = 40000, Weight = 2},
-                    new ItemViewModel {Name = "Bowler", Price = 500, Weight = 1},
-
-                    new ItemViewModel { Name = "Item 1", Price = 100, Weight = 1},
-                    new ItemViewModel { Name = "Item 2", Price = 200, Weight = 1},
-                    new ItemViewModel { Name = "Item 3", Price = 300, Weight = 3},
-                    new ItemViewModel { Name = "Item 4", Price = 400, Weight = 2},
-                    new ItemViewModel { Name = "Item 5", Price = 500, Weight = 1},
-                }
+                
             };
             return View(viewModel);
         }
@@ -55,12 +41,8 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.Controllers
         {
             var list = Mapper.Map<List<ItemViewModel>, List<ItemDto>>(vm.Items);
             string taskId = await _service.NewBackpackTask(list, vm.Name, vm.BackpackWeightLimit);
+            HostingEnvironment.QueueBackgroundWorkItem(ct => _service.StartBackpackTask(taskId, ct));
 
-            CancellationTokenSource cancellation = new CancellationTokenSource();
-            CancellationToken token = cancellation.Token;
-            BackpackTaskService.CancellationTokens.Add(taskId, cancellation);
-
-            Task.Run(() => _service.StartBackpackTask(taskId, token));
             return RedirectToAction("Index");
         }
 

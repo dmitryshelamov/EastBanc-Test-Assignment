@@ -6,5 +6,6 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL.Interfaces
     public interface IAppDbContext
     {
         IDbSet<BackpackTask> BackpackTasks { get; }
+        DbSet<CombinationSet> CombinationSets { get; }
     }
 }

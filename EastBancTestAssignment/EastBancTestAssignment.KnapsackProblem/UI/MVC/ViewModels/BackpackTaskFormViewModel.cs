@@ -12,5 +12,10 @@ namespace EastBancTestAssignment.KnapsackProblem.UI.MVC.ViewModels
         public int BackpackWeightLimit { get; set; }
 
         public List<ItemViewModel> Items { get; set; }
+
+        public BackpackTaskFormViewModel()
+        {
+            Items = new List<ItemViewModel>();
+        }
     }
 }

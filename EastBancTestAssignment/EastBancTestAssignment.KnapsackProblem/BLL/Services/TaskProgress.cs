@@ -29,6 +29,8 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             _currentProgress++;
             int oldProgress = Progress;
             Progress = (int) Math.Round((double) (100 * _currentProgress) / _totalAmountOfWork);
+            if (Progress > 100)
+                Progress = 100;
             if (Progress > oldProgress)
                 OnProgressUpdate();
             if (Progress == 100)

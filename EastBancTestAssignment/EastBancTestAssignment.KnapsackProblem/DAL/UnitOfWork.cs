@@ -9,11 +9,13 @@ namespace EastBancTestAssignment.KnapsackProblem.DAL
     {
         private readonly AppDbContext _context;
         public IBackpackTaskRepository BackpackTaskRepository { get; }
+        public ICombinationSetRepository CombinationSetRepository { get; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             BackpackTaskRepository = new BackpackTaskRepository(context);
+            CombinationSetRepository = new CombinationSetRepository(context);
         }
 
         public async Task CompleteAsync()

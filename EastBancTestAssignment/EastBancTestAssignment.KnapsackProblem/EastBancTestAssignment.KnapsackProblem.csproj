@@ -186,6 +186,7 @@
     <Compile Include="BLL\Services\BackpackTaskService.cs" />
     <Compile Include="BLL\Services\CalculationService.cs" />
     <Compile Include="BLL\Services\TaskProgress.cs" />
+    <Compile Include="DAL\Interfaces\Repositories\ICombinationSetRepository.cs" />
     <Compile Include="DAL\Migrations\201712100911058_RemoveIsCalculatedFromCombinationSet.cs" />
     <Compile Include="DAL\Migrations\201712100911058_RemoveIsCalculatedFromCombinationSet.Designer.cs">
       <DependentUpon>201712100911058_RemoveIsCalculatedFromCombinationSet.cs</DependentUpon>
@@ -200,6 +201,7 @@
     <Compile Include="DAL\Interfaces\Repositories\IBackpackTaskRepository.cs" />
     <Compile Include="DAL\Repositories\AppDbContext.cs" />
     <Compile Include="DAL\Repositories\BackpackTaskRepository.cs" />
+    <Compile Include="DAL\Repositories\CombinationSetRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

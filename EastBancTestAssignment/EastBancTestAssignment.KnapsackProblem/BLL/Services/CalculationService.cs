@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using EastBancTestAssignment.KnapsackProblem.DAL.Interfaces;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
 
 namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
@@ -11,7 +8,7 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
     public static class CalculationService
     {
 
-        public static async Task StartCalculation(BackpackTask backpackTask, TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
+        public static void StartCalculation(BackpackTask backpackTask, TaskProgress service, CancellationToken token)
         {
             List<Item> set = backpackTask.BackpackItems;
             List<CombinationSet> result = backpackTask.CombinationSets;
@@ -23,20 +20,20 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
             {
                 CombinationSet combinationSet = new CombinationSet { ItemCombinations = set.Select(item => new ItemCombination { Item = item }).ToList() };
                 result.Add(combinationSet);
-                await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork, token);
+                CalculateCombinationSet(backpackTask, combinationSet, service, token);
             }
 
-            await GenerateCombinationRecursive(backpackTask, set, result, service, unitOfWork, token);
+            GenerateCombinationRecursive(backpackTask, set, result, service, token);
         }
 
-        private static async Task GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
+        private static void GenerateCombinationRecursive(BackpackTask backpackTask, List<Item> set, List<CombinationSet> result, TaskProgress service, CancellationToken token)
         {
             for (int i = 0; i < set.Count; i++)
             {
+
                 if (token.IsCancellationRequested)
-                {
                     return;
-                }
+                
                 List<Item> temp = new List<Item>(set.Where((s, index) => index != i));
 
                 if (temp.Count > 0 && !result.Where(l => l.ItemCombinations.Count == temp.Count).Any(l =>
@@ -47,15 +44,17 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 {
                     CombinationSet combinationSet = new CombinationSet { ItemCombinations = temp.Select(item => new ItemCombination { Item = item }).ToList() };
                     result.Add(combinationSet);
-                    await CalculateCombinationSet(backpackTask, combinationSet, service, unitOfWork, token);
-                    await GenerateCombinationRecursive(backpackTask, temp, result, service, unitOfWork, token);
+                    CalculateCombinationSet(backpackTask, combinationSet, service, token);
+                    GenerateCombinationRecursive(backpackTask, temp, result, service, token);
                 }
             }
         }
 
-        private static async Task CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set,
-            TaskProgress service, IUnitOfWork unitOfWork, CancellationToken token)
+        private static void CalculateCombinationSet(BackpackTask backpackTask, CombinationSet set,
+            TaskProgress service, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+                return;
             //  iterate over all item combinations
             //  calculate total weight and price of current item set
             var totalWeight = 0;
@@ -81,11 +80,10 @@ namespace EastBancTestAssignment.KnapsackProblem.BLL.Services
                 backpackTask.BestItemSet = new List<BestItemSet>();
                 foreach (var item in items)
                 {
-                    backpackTask.BestItemSet.Add(new BestItemSet() {Item = item});
+                    backpackTask.BestItemSet.Add(new BestItemSet() { Item = item });
                 }
             }
-            //  mark current set as calucated
-            await unitOfWork.CompleteAsync();
+
             service.UpdateProgress();
         }
     }
