@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using AutoMapper;
 using EastBancTestAssignment.KnapsackProblem.BLL.DTOs;
 using EastBancTestAssignment.KnapsackProblem.DAL.Models;
@@ -38,20 +37,12 @@ namespace EastBancTestAssignment.KnapsackProblem.App_Start
                 .ForMember(dest => dest.BestItemSet, opt => opt.ResolveUsing(src => src.BestItemSet));
 
             CreateMap<BackpackTaskDto, BackpackTaskViewModel>()
-                .ForMember(des => des.StatusMessage, opt => opt.ResolveUsing(src =>
-                {
-                    return src.Complete ? "Complete" : "In Progress";
-                }))
-                .ForMember(des => des.BestPrice, opt => opt.ResolveUsing(src =>
-                {
-                    return !src.Complete ? default(int?) : src.BestItemSetPrice;
-                }));
+                .ForMember(des => des.StatusMessage, opt => opt.ResolveUsing(src => src.Complete ? "Complete" : "In Progress"))
+                .ForMember(des => des.BestPrice, opt => opt.ResolveUsing(src => !src.Complete ? default(int?) : src.BestItemSetPrice))
+                .ForMember(des => des.PercentComplete, opt => opt.ResolveUsing(src => !src.Complete ? default(int?) : src.PercentComplete));
 
             CreateMap<BackpackTaskDto, BackpackTaskDetailViewModel>()
-                .ForMember(des => des.Status, opt => opt.ResolveUsing(src =>
-                {
-                    return src.Complete ? "Complete" : "In Progress";
-                }))
+                .ForMember(des => des.Status, opt => opt.ResolveUsing(src => src.Complete ? "Complete" : "In Progress"))
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.ItemDtos))
                 .ForMember(dest => dest.BestItemSet, opt => opt.MapFrom(src => src.BestItemSet))
                 .ForMember(dest => dest.BestPrice, opt => opt.ResolveUsing(src => src.BestItemSetPrice))
